@@ -4,17 +4,15 @@ import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { ArrowLeft, LogOut, LucideIcon, Menu, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-import { NotificationList } from '../ui/NotificationList';
 import { ProfileView } from '../ui/ProfileView';
 
-// Define the type for sidebar items
 interface SidebarItem {
   title: string;
   href: { pathname: string };
@@ -38,16 +36,14 @@ export function Sidebar({
   setIsMobileOpen,
 }: SidebarProps) {
   const pathname = usePathname();
-
-  // State for desktop collapse only (not for mobile drawer)
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
-  const [notificationOpen, setNotificationOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
-        setIsCollapsed(false); // always expanded in drawer mode
+        setIsCollapsed(false); // Always expanded on mobile
       }
     };
     handleResize();
@@ -57,7 +53,7 @@ export function Sidebar({
 
   const toggleCollapse = () => {
     setIsCollapsed(prev => !prev);
-    if (onToggleCollapse) onToggleCollapse();
+    onToggleCollapse?.();
   };
 
   return (
@@ -96,7 +92,6 @@ export function Sidebar({
             )}
           </Button>
 
-          {/* Mobile close button */}
           <Button
             variant="ghost"
             onClick={() => setIsMobileOpen(false)}
@@ -106,18 +101,8 @@ export function Sidebar({
           </Button>
         </div>
 
-        {/* Logo Section */}
         <div className="flex h-16 items-center justify-start px-4">
-          {!isCollapsed ? (
-            <Image
-              src="/images/rumor-logo-expand.svg"
-              alt="Rumor Logo"
-              width={120}
-              height={40}
-              className="h-auto max-h-10 w-auto"
-              priority
-            />
-          ) : (
+          {isCollapsed ? (
             <Image
               src="/images/rumor-logo-collapsed.svg"
               alt="Rumor"
@@ -126,20 +111,29 @@ export function Sidebar({
               className="h-8 w-8"
               priority
             />
+          ) : (
+            <Image
+              src="/images/rumor-logo-expand.svg"
+              alt="Rumor Logo"
+              width={120}
+              height={40}
+              className="h-auto max-h-10 w-auto"
+              priority
+            />
           )}
         </div>
 
-        {/* Navigation */}
         <nav
-          className={`flex-1 space-y-1 ${isCollapsed ? 'px-2' : 'px-4'} ${
-            isCollapsed ? 'py-2' : 'py-4'
-          }`}
+          className={cn(
+            'flex-1 space-y-1',
+            isCollapsed ? 'px-2 py-2' : 'px-4 py-4'
+          )}
         >
           {sidebarItems.map(item => {
             const Icon = item.icon;
             const isActive =
               pathname === item.href.pathname ||
-              (item.href.pathname !== '/dashboard' &&
+              (item.href.pathname !== '/admin/dashboard' &&
                 pathname.startsWith(item.href.pathname));
 
             return (
@@ -147,12 +141,12 @@ export function Sidebar({
                 <Button
                   variant="ghost"
                   className={cn(
-                    'h-10 w-full justify-start gap-3 rounded-full px-3 text-zinc-400 hover:bg-zinc-800 hover:text-white',
+                    'h-11 w-full justify-start gap-3 rounded-full px-3 text-zinc-400 hover:bg-zinc-800 hover:text-white',
                     isActive &&
                       'bg-white text-black hover:bg-white hover:text-black',
                     isCollapsed && 'justify-center px-0'
                   )}
-                  onClick={() => setIsMobileOpen(false)} // close on mobile nav click
+                  onClick={() => setIsMobileOpen(false)}
                 >
                   <Icon className="h-5 w-5 flex-shrink-0" />
                   {!isCollapsed && (
@@ -164,51 +158,19 @@ export function Sidebar({
           })}
         </nav>
 
-        {/* Promo Section (only visible when expanded) */}
-        {!isCollapsed && (
-          <div className="p-4">
-            <div className="rounded-lg bg-zinc-800 p-4">
-              <p className="mb-3 font-diatype text-sm leading-relaxed text-zinc-300">
-                Apply to Rumor to unlock all event management tools.
-              </p>
-              <Button className="w-full bg-white font-diatype font-medium text-black hover:bg-zinc-200">
-                Apply Now
-              </Button>
-            </div>
-          </div>
-        )}
+        {/* Mobile Profile Section */}
         <div className="flex items-center gap-3 px-4 py-2 lg:hidden">
-          {/* Notification */}
-          <div className="relative">
-            <Button
-              className="relative h-[44px] w-[52px] rounded-[128px] bg-white"
-              onClick={() => setNotificationOpen(!notificationOpen)}
-            >
-              <Image
-                src="/images/bell-04.svg"
-                width={21}
-                height={21}
-                alt="Bell Icon"
-              />
-              <span className="absolute right-0 top-0 h-3 w-3 rounded-full bg-ui-neutralDarkRed" />
-            </Button>
-
-            <NotificationList
-              open={notificationOpen}
-              onOpenChange={setNotificationOpen}
-              position={{ bottom: 'calc(100% + 5rem)', left: '0' }}
-            />
-          </div>
-
-          {/* Profile */}
           <div className="relative">
             <div
               onClick={() => setProfileOpen(prev => !prev)}
               className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-ui-neutralSurfaceSupport"
             >
-              <span className="text-center font-diatype text-[18px] font-medium text-zinc-700">
-                WW
-              </span>
+              <Image
+                src="/images/Monogram.svg"
+                width={44}
+                height={44}
+                alt="User Avatar"
+              />
             </div>
 
             <ProfileView
@@ -219,7 +181,6 @@ export function Sidebar({
           </div>
         </div>
 
-        {/* Logout */}
         <div
           className={cn(
             'border-t border-zinc-800',
@@ -227,6 +188,7 @@ export function Sidebar({
           )}
         >
           <Button
+            onClick={() => router.push('/admin/auth/sign-in')}
             variant="ghost"
             className={cn(
               'h-10 w-full justify-start gap-3 text-zinc-400 hover:bg-zinc-800 hover:text-white',

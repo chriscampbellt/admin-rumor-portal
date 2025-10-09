@@ -67,7 +67,7 @@ export function ProfileView({
           <li>
             <div className="flex items-center gap-3 rounded-lg px-3 py-2">
               <Image
-                src="/images/User 94.png"
+                src="/images/Monogram.svg"
                 alt="Profile"
                 width={40}
                 height={40}

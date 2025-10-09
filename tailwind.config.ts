@@ -95,6 +95,10 @@ const config: Config = {
           bgBlur: '#A4887E',
           errorBorderColor: '#D32F2F',
           textPrimaryColor: '#393D3F',
+          bgGrey50: '#FAFAFA',
+          mutedGreen: '#CBDDB5',
+          monoBlack: '#1E1E1E',
+          primaryBorder: '#D5D5D5',
         },
         heading: {
           black: '#1D2126',

@@ -45,6 +45,11 @@ export default function DashboardLayout({
         title: 'Dashboard',
         showBackButton: false,
       };
+    } else if (pathname.match('/admin/events')) {
+      return {
+        title: 'Events',
+        showBackButton: false,
+      };
     }
     return {
       title: 'Dashboard',

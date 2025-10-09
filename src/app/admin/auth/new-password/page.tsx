@@ -58,7 +58,7 @@ export default function ResetPasswordPage() {
           alt="Rumor Logo"
           height={10}
           width={128}
-          className="h-10 max-w-[128px] cursor-pointer sm:h-12"
+          className="h-10 max-w-[128px] sm:h-12"
         />
         {/* <ThemeSwitcher /> */}
       </div>
@@ -147,7 +147,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className="hidden w-full max-w-[543px] px-4 lg:block lg:w-[40%] lg:px-8">
-          <Image
+          {/* <Image
             src="/images/new-password.png"
             alt="Person using vintage telephone"
             width={1000}
@@ -156,7 +156,7 @@ export default function ResetPasswordPage() {
             onError={e => {
               e.currentTarget.src = '/images/fallback.png';
             }}
-          />
+          /> */}
         </div>
       </div>
       <div className="absolute bottom-0 left-0 z-[1] flex h-[22vh] w-[30vw] max-w-[280px] items-end justify-start xl:h-[26vh] xl:w-[20vw] 2xl:h-[28vh] 2xl:w-[28vw]">

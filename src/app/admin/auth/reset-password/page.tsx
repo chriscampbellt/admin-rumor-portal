@@ -119,7 +119,7 @@ export default function ResetPasswordPage() {
         </div>
 
         <div className="hidden w-full max-w-[543px] px-4 lg:block lg:w-[40%] lg:px-8">
-          <Image
+          {/* <Image
             src="/images/sign-in.jpg"
             alt="People in a warm, social atmosphere"
             width={543}
@@ -128,7 +128,7 @@ export default function ResetPasswordPage() {
             onError={e => {
               e.currentTarget.src = '/images/sign-in.jpg';
             }}
-          />
+          /> */}
         </div>
       </div>
       <div className="absolute bottom-0 left-0 z-[1] flex h-[22vh] w-[30vw] max-w-[280px] items-end justify-start xl:h-[26vh] xl:w-[20vw] 2xl:h-[28vh] 2xl:w-[28vw]">

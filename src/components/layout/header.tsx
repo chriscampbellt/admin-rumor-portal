@@ -9,7 +9,6 @@ import { ChevronLeft, Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { NotificationList } from '../ui/NotificationList';
 import { ProfileView } from '../ui/ProfileView';
 
 interface HeaderConfig {
@@ -27,7 +26,6 @@ interface HeaderProps {
 export function Header({ config, onOpenSidebar }: HeaderProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [notificationOpen, setNotificationOpen] = useState(false);
 
   const handleBackClick = () => {
     if (config.backUrl) {
@@ -65,32 +63,17 @@ export function Header({ config, onOpenSidebar }: HeaderProps) {
         </div>
 
         <div className="hidden items-center gap-1 lg:flex">
-          <Button
-            className="relative h-[44px] w-[52px] rounded-[128px] bg-white text-center"
-            onClick={() => setNotificationOpen(!notificationOpen)}
-          >
-            <Image
-              src="/images/bell-04.svg"
-              width={21}
-              height={21}
-              alt="Bell Icon"
-            />
-            <span className="absolute right-0 top-0 h-3 w-3 rounded-full bg-ui-neutralDarkRed" />
-          </Button>
-          <NotificationList
-            open={notificationOpen}
-            onOpenChange={setNotificationOpen}
-            position={{ top: '2rem', right: '1rem' }}
-          />
-
           <div className="flex items-center gap-2">
             <div
               onClick={() => setOpen(prev => !prev)}
-              className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-ui-neutralSurfaceSupport"
+              className="flex cursor-pointer items-center justify-center"
             >
-              <span className="text-center font-diatype text-[18px] font-medium text-zinc-700">
-                WW
-              </span>
+              <Image
+                src="/images/Monogram.svg"
+                width={44}
+                height={44}
+                alt="Bell Icon"
+              />
             </div>
             <ProfileView
               open={open}
