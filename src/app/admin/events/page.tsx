@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Eye, EyeOff, Search, User2 } from 'lucide-react';
+import { ChevronDown, Eye, EyeOff, Search, Star, User2 } from 'lucide-react';
 
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
@@ -151,6 +151,35 @@ const columns: ColumnDef<EventData>[] = [
         return <Pill label="Pending Approval" variant="pending" />;
       return '—';
     },
+  },
+  {
+    accessorKey: 'featured',
+    header: 'Featured Events',
+    cell: () => (
+      <div className="flex items-center gap-2.5 text-ui-textTertiary">
+        <span className="flex items-center gap-1 rounded-full border border-gray-300 px-2.5 py-1.5 text-[13px]">
+          <Star size={16} />
+          Featured 1
+          <ChevronDown size={15} />
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'collaborators',
+    header: 'Collaborators',
+    cell: () => (
+      <span className="text-[13px] text-ui-textTertiary">Revolve +2</span>
+    ),
+  },
+  {
+    accessorKey: 'featuredTalent',
+    header: 'Featured Talent',
+    cell: () => (
+      <span className="text-[13px] text-ui-textPrimaryColor">
+        The Rolling Stones +10
+      </span>
+    ),
   },
 ];
 

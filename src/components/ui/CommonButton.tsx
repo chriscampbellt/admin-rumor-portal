@@ -8,7 +8,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center cursor-pointer font-diatype justify-center whitespace-nowrap rounded-full text-[16px] font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center cursor-pointer font-diatype whitespace-nowrap rounded-full text-[16px] font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -36,17 +36,25 @@ const buttonVariants = cva(
 );
 
 export interface CommonButtonProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   asChild?: boolean;
-  type?: string;
 }
 
-const CommonButton = React.forwardRef<HTMLDivElement, CommonButtonProps>(
+const CommonButton = React.forwardRef<HTMLButtonElement, CommonButtonProps>(
   (
-    { className, variant, size, leftIcon, rightIcon, children, ...props },
+    {
+      className,
+      variant,
+      size,
+      leftIcon,
+      rightIcon,
+      disabled,
+      children,
+      ...props
+    },
     ref
   ) => {
     const { theme } = useTheme();
@@ -57,13 +65,15 @@ const CommonButton = React.forwardRef<HTMLDivElement, CommonButtonProps>(
         : 'bg-ui-neuteralSurfaceSecondary text-black hover:text-white hover:bg-ui-bgBlur';
 
     return (
-      <div
+      <button
+        ref={ref}
         className={cn(
           buttonVariants({ variant, size }),
           themeOverride,
+          disabled && 'cursor-not-allowed opacity-50',
           className
         )}
-        ref={ref}
+        disabled={disabled}
         {...props}
       >
         {leftIcon && <span className="mr-2 flex items-center">{leftIcon}</span>}
@@ -71,7 +81,7 @@ const CommonButton = React.forwardRef<HTMLDivElement, CommonButtonProps>(
         {rightIcon && (
           <span className="ml-2 flex items-center">{rightIcon}</span>
         )}
-      </div>
+      </button>
     );
   }
 );

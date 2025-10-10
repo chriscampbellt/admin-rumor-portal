@@ -67,7 +67,7 @@ function DataTable<TData extends { id: string | number }>({
             {table.getHeaderGroups().map(headerGroup => (
               <tr
                 key={headerGroup.id}
-                className="border-b border-[rgba(0,0,0,0.12)] text-left text-sm font-medium uppercase tracking-wide text-ui-textPrimaryColor"
+                className="border-b border-[rgba(0,0,0,0.12)] text-left text-sm font-medium capitalize tracking-wide text-ui-textPrimaryColor"
               >
                 {headerGroup.headers.map(header => (
                   <th

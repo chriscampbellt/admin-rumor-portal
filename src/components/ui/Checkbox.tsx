@@ -40,8 +40,10 @@ export default function Checkbox(props: CheckboxProps) {
     >
       <span
         className={cn(
-          'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border border-gray-700',
-          isChecked && !disabled ? 'bg-black text-white' : '', // <-- isChecked is used here
+          'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[3px] border-2 border-ui-neutralContentBody',
+          isChecked && !disabled
+            ? 'border-ui-bgBlur bg-ui-bgBlur text-white'
+            : '', // <-- isChecked is used here
           disabled ? 'opacity-60' : ''
         )}
       >

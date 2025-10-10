@@ -45,6 +45,12 @@ export default function DashboardLayout({
         title: 'Dashboard',
         showBackButton: false,
       };
+    } else if (pathname.match('/admin/events/pending-approval')) {
+      return {
+        title: 'Palm Tree Music Festival The Hamptons',
+        showBackButton: true,
+        backUrl: '/admin/events',
+      };
     } else if (pathname.match('/admin/events')) {
       return {
         title: 'Events',
