@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { format } from 'date-fns';
-import { CalendarIcon, ChevronDown } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
@@ -45,6 +45,7 @@ const TIMEZONES = [
 ];
 
 interface DateTimePickerProps {
+  label?: string;
   value?: { date?: Date; time?: string; timezone?: string };
   onChange: (value: { date?: Date; time?: string; timezone?: string }) => void;
   placeholder?: string;
@@ -53,6 +54,7 @@ interface DateTimePickerProps {
 }
 
 export const DateTimePicker: React.FC<DateTimePickerProps> = ({
+  label = 'Start Date',
   value = {},
   onChange,
   placeholder = 'Select date and time...',
@@ -88,32 +90,33 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   };
 
   const formatDateTime = () => {
-    if (!selectedDate) return placeholder;
+    if (!selectedDate) return '';
     const datePart = format(selectedDate, 'MM/dd/yy');
     if (!selectedTime) return `${datePart} ${selectedTimezone || ''}`;
-    return `${datePart} ${selectedTime} (${selectedTimezone || ''})`;
+    return `${datePart} ${selectedTime} ${selectedTimezone || ''}`;
   };
-
+  const displayValue = formatDateTime();
   return (
-    <div className={cn('', className)}>
+    <div className={cn('relative', className)}>
+      <label
+        className={cn(
+          'absolute left-3 top-3.5 -translate-y-1/2 bg-transparent font-diatype text-xs text-ui-textTertiary transition-all duration-200',
+          (isOpen || displayValue) && 'top-3.5 -translate-y-1/2'
+        )}
+      >
+        {label}
+      </label>
+
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <div
             className={cn(
-              'group flex w-full cursor-pointer items-center justify-between gap-2 rounded-[8px] border border-ui-neutralBorderComponent bg-white px-3 py-3.5 text-left font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor outline-none transition-colors hover:bg-white focus:outline-none focus:ring-0',
+              'group flex w-full cursor-pointer items-center justify-between gap-2 rounded-[8px] border border-ui-neutralSurfaceBackground bg-ui-neutralSurfaceBackground px-3 pb-1 pt-6 text-left font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor outline-none transition-colors focus:outline-none focus:ring-0',
               !selectedDate && 'text-ui-neutralPlaceholder'
             )}
           >
-            <div className="flex items-center gap-2 truncate">
-              <CalendarIcon className="h-4 w-4 flex-shrink-0 text-ui-neuteralSurfaceSecondary" />
-              <span className="truncate">{formatDateTime()}</span>
-            </div>
-            <ChevronDown
-              className={cn(
-                'h-4 w-4 flex-shrink-0 text-ui-neutralSurfaceOnColor transition-transform',
-                isOpen && 'rotate-180'
-              )}
-            />
+            <span className="truncate">{displayValue || placeholder}</span>
+            <CalendarIcon className="text-[rgba(0, 0, 0, 0.56)] h-5 w-5 flex-shrink-0" />
           </div>
         </PopoverTrigger>
 

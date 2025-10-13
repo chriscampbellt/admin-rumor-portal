@@ -69,119 +69,39 @@ export interface EventData {
   status: string;
 }
 
-const EventNameCell = ({ icon, eventName, id }: EventData) => {
+interface EventNameCellProps extends EventData {
+  onIconClick: () => void;
+}
+const EventNameCell = ({
+  icon,
+  eventName,
+  id,
+  onIconClick,
+}: EventNameCellProps) => {
   const router = useRouter();
   const handleClick = () => {
     router.push(`/admin/events/${id}`);
   };
   return (
-    <div
-      onClick={handleClick}
-      className="hover:text-ui-primary flex cursor-pointer items-center gap-6 transition-colors"
-    >
-      <span className="min-w-[9%] flex-shrink-0 text-neutral-700">{icon}</span>
-      <span className="max-w-[70%] truncate text-sm font-normal text-ui-monoBlack xl:max-w-full">
+    <div className="flex items-center gap-6">
+      <span
+        className="min-w-[9%] flex-shrink-0 cursor-pointer text-neutral-700 transition-opacity hover:opacity-70"
+        onClick={e => {
+          e.stopPropagation();
+          onIconClick();
+        }}
+      >
+        {icon}
+      </span>
+      <span
+        onClick={handleClick}
+        className="hover:text-ui-primary max-w-[70%] cursor-pointer truncate text-sm font-normal text-ui-monoBlack transition-colors xl:max-w-full"
+      >
         {eventName}
       </span>
     </div>
   );
 };
-
-const columns: ColumnDef<EventData>[] = [
-  {
-    accessorKey: 'eventName',
-    header: 'Event Name',
-    cell: ({ row }) => <EventNameCell {...row.original} />,
-  },
-  {
-    accessorKey: 'host',
-    header: 'Host',
-    cell: ({ getValue }) => {
-      const value = getValue() as string | undefined;
-      return <span className="text-sm text-ui-monoBlack">{value ?? '—'}</span>;
-    },
-  },
-  {
-    accessorKey: 'eventDate',
-    header: 'Event Date',
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-      return <span className="text-sm text-ui-monoBlack">{value}</span>;
-    },
-  },
-  {
-    accessorKey: 'eventType',
-    header: 'Event Type',
-    cell: ({ getValue }) => {
-      const value = getValue() as string | undefined;
-      return (
-        <span className="rounded-full border border-ui-primaryBorder bg-white px-2.5 py-1 text-[13px] font-normal text-ui-textTertiary">
-          {value ?? '—'}
-        </span>
-      );
-    },
-  },
-  {
-    accessorKey: 'city',
-    header: 'City',
-    cell: ({ getValue }) => {
-      const value = getValue() as string | undefined;
-      return <span className="text-sm text-ui-monoBlack">{value ?? '—'}</span>;
-    },
-  },
-  {
-    accessorKey: 'visibility',
-    header: 'Visibility',
-    cell: ({ getValue }) => {
-      const val = (getValue() as string)?.toLowerCase();
-      if (val === 'public') return <Pill label="Public" variant="public" />;
-      if (val === 'private') return <Pill label="Private" variant="private" />;
-      if (val === 'curated') return <Pill label="Curated" variant="curated" />;
-      return '—';
-    },
-  },
-  {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ getValue }) => {
-      const val = (getValue() as string)?.toLowerCase();
-      if (val === 'upcoming')
-        return <Pill label="Upcoming" variant="upcoming" />;
-      if (val === 'pending approval')
-        return <Pill label="Pending Approval" variant="pending" />;
-      return '—';
-    },
-  },
-  {
-    accessorKey: 'featured',
-    header: 'Featured Events',
-    cell: () => (
-      <div className="flex items-center gap-2.5 text-ui-textTertiary">
-        <span className="flex items-center gap-1 rounded-full border border-gray-300 px-2.5 py-1.5 text-[13px]">
-          <Star size={16} />
-          Featured 1
-          <ChevronDown size={15} />
-        </span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'collaborators',
-    header: 'Collaborators',
-    cell: () => (
-      <span className="text-[13px] text-ui-textTertiary">Revolve +2</span>
-    ),
-  },
-  {
-    accessorKey: 'featuredTalent',
-    header: 'Featured Talent',
-    cell: () => (
-      <span className="text-[13px] text-ui-textPrimaryColor">
-        The Rolling Stones +10
-      </span>
-    ),
-  },
-];
 
 const data: EventData[] = [
   {
@@ -332,6 +252,119 @@ const data: EventData[] = [
 
 export default function EventTable() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [showExtraColumns, setShowExtraColumns] = useState(false);
+  const toggleExtraColumns = () => {
+    setShowExtraColumns(!showExtraColumns);
+  };
+  const columns: ColumnDef<EventData>[] = [
+    {
+      accessorKey: 'eventName',
+      header: 'Event Name',
+      cell: ({ row }) => (
+        <EventNameCell {...row.original} onIconClick={toggleExtraColumns} />
+      ),
+    },
+    {
+      accessorKey: 'host',
+      header: 'Host',
+      cell: ({ getValue }) => {
+        const value = getValue() as string | undefined;
+        return (
+          <span className="text-sm text-ui-monoBlack">{value ?? '—'}</span>
+        );
+      },
+    },
+    {
+      accessorKey: 'eventDate',
+      header: 'Event Date',
+      cell: ({ getValue }) => {
+        const value = getValue() as string;
+        return <span className="text-sm text-ui-monoBlack">{value}</span>;
+      },
+    },
+    {
+      accessorKey: 'eventType',
+      header: 'Event Type',
+      cell: ({ getValue }) => {
+        const value = getValue() as string | undefined;
+        return (
+          <span className="rounded-full border border-ui-primaryBorder bg-white px-2.5 py-1 text-[13px] font-normal text-ui-textTertiary">
+            {value ?? '—'}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: 'city',
+      header: 'City',
+      cell: ({ getValue }) => {
+        const value = getValue() as string | undefined;
+        return (
+          <span className="text-sm text-ui-monoBlack">{value ?? '—'}</span>
+        );
+      },
+    },
+    {
+      accessorKey: 'visibility',
+      header: 'Visibility',
+      cell: ({ getValue }) => {
+        const val = (getValue() as string)?.toLowerCase();
+        if (val === 'public') return <Pill label="Public" variant="public" />;
+        if (val === 'private')
+          return <Pill label="Private" variant="private" />;
+        if (val === 'curated')
+          return <Pill label="Curated" variant="curated" />;
+        return '—';
+      },
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ getValue }) => {
+        const val = (getValue() as string)?.toLowerCase();
+        if (val === 'upcoming')
+          return <Pill label="Upcoming" variant="upcoming" />;
+        if (val === 'pending approval')
+          return <Pill label="Pending Approval" variant="pending" />;
+        return '—';
+      },
+    },
+    ...(showExtraColumns
+      ? ([
+          {
+            accessorKey: 'featured',
+            header: 'Featured Events',
+            cell: () => (
+              <div className="flex items-center gap-2.5 text-ui-textTertiary">
+                <span className="flex items-center gap-1 rounded-full border border-gray-300 px-2.5 py-1.5 text-[13px]">
+                  <Star size={16} />
+                  Featured 1
+                  <ChevronDown size={15} />
+                </span>
+              </div>
+            ),
+          },
+          {
+            accessorKey: 'collaborators',
+            header: 'Collaborators',
+            cell: () => (
+              <span className="text-[13px] text-ui-textTertiary">
+                Revolve +2
+              </span>
+            ),
+          },
+          {
+            accessorKey: 'featuredTalent',
+            header: 'Featured Talent',
+            cell: () => (
+              <span className="text-[13px] text-ui-textPrimaryColor">
+                The Rolling Stones +10
+              </span>
+            ),
+          },
+        ] as ColumnDef<EventData>[])
+      : []),
+  ];
 
   return (
     <div className="px-6 py-8 2xl:px-8">

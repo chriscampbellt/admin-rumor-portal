@@ -2,11 +2,9 @@
 
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
-import Image from 'next/image';
-
 import { ChevronDown } from 'lucide-react';
 
-import { Label } from './label';
+import { cn } from '@/lib/utils';
 
 interface Option {
   value: string;
@@ -38,26 +36,18 @@ const CommonSelect: React.FC<CommonSelectProps> = ({
   const triggerRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find(opt => opt.value === value);
-  const displayText = selectedOption ? selectedOption.label : placeholder;
+  const displayText = selectedOption ? selectedOption.label : '';
 
   const calculatePosition = () => {
     if (!triggerRef.current) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const dropdownHeight = Math.min(
-      200,
-      (options.length + (placeholder ? 1 : 0)) * 40
-    );
-
+    const dropdownHeight = Math.min(200, (options.length + 1) * 40);
     const spaceBelow = viewportHeight - triggerRect.bottom - 10;
     const spaceAbove = triggerRect.top - 10;
 
-    if (spaceBelow < dropdownHeight && spaceAbove >= dropdownHeight) {
-      setOpenUpward(true);
-    } else {
-      setOpenUpward(false);
-    }
+    setOpenUpward(spaceBelow < dropdownHeight && spaceAbove >= dropdownHeight);
   };
 
   useEffect(() => {
@@ -69,15 +59,12 @@ const CommonSelect: React.FC<CommonSelectProps> = ({
         setIsOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleToggle = () => {
-    if (!isOpen) {
-      calculatePosition();
-    }
+    if (!isOpen) calculatePosition();
     setIsOpen(!isOpen);
   };
 
@@ -87,29 +74,23 @@ const CommonSelect: React.FC<CommonSelectProps> = ({
   };
 
   return (
-    <div className="w-full cursor-pointer" ref={dropdownRef}>
-      <div className="flex items-center gap-1">
-        {label && (
-          <Label className="pb-1 font-diatype text-[14px] font-medium !text-ui-neutralSurfaceOnColor">
-            {label}
-          </Label>
-        )}
-        {icon && (
-          <Image
-            src="/images/info-circle.svg"
-            className="pb-1"
-            width={18}
-            height={18}
-            alt="Info Icon"
-          />
-        )}
-      </div>
-
+    <div className="relative w-full" ref={dropdownRef}>
       <div className="relative">
+        {label && (
+          <label
+            className={cn(
+              'absolute left-3 top-3.5 -translate-y-1/2 bg-transparent font-diatype text-xs text-ui-textTertiary transition-all duration-200',
+              (isOpen || value) && 'top-3.5 -translate-y-1/2'
+            )}
+          >
+            {label}
+          </label>
+        )}
+
         <div
           ref={triggerRef}
           onClick={handleToggle}
-          className={`flex min-h-[48px] w-full cursor-pointer appearance-none items-center rounded-lg border bg-white py-2 pl-3 pr-10 text-left font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor outline-none placeholder:text-ui-neutralPlaceholder ${className}`}
+          className={`flex min-h-[48px] w-full cursor-pointer appearance-none items-center rounded-lg border border-ui-neutralSurfaceBackground bg-ui-neutralSurfaceBackground ${label ? 'pt-4' : 'py-2'} pl-3 pr-10 text-left font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor outline-none placeholder:text-ui-neutralPlaceholder ${className}`}
         >
           <span
             className={
@@ -118,99 +99,54 @@ const CommonSelect: React.FC<CommonSelectProps> = ({
                 : 'truncate text-ui-neutralPlaceholder'
             }
           >
-            {displayText}
+            {displayText || placeholder}
           </span>
         </div>
-
         <ChevronDown
           className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-diatype text-ui-neutralSurfaceOnColor transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
           size={18}
         />
-
-        {isOpen && (
-          <div
-            style={{
-              position: 'absolute',
-              ...(openUpward
-                ? {
-                    bottom: '100%',
-                    marginBottom: '4px',
-                  }
-                : {
-                    top: '100%',
-                    marginTop: '4px',
-                  }),
-              left: 0,
-              right: 0,
-              zIndex: 50,
-              backgroundColor: 'white',
-              border: '1px solid #d1d5db',
-              borderRadius: '12px',
-              boxShadow:
-                '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-              maxHeight: '200px',
-              overflowY: 'auto',
-              scrollbarWidth: 'none', // Firefox
-              msOverflowStyle: 'none', // IE and Edge
-            }}
-            className="font-diatype [&::-webkit-scrollbar]:hidden"
-          >
-            {placeholder && (
-              <div
-                onClick={() => handleSelect('')}
-                style={{
-                  padding: '8px 12px',
-                  cursor: 'pointer',
-                  color: '#9ca3af',
-                  fontSize: '14px',
-                  fontFamily: 'inherit',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.backgroundColor = '#f9fafb';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-              >
-                {placeholder}
-              </div>
-            )}
-            {options.map(opt => (
-              <div
-                key={opt.value}
-                onClick={() => handleSelect(opt.value)}
-                style={{
-                  padding: '8px 12px',
-                  cursor: 'pointer',
-                  color: 'inherit',
-                  fontSize: '14px',
-                  fontFamily: 'inherit',
-                  backgroundColor:
-                    value === opt.value ? '#f3f4f6' : 'transparent',
-                  fontWeight: value === opt.value ? '500' : '400',
-                }}
-                onMouseEnter={e => {
-                  if (value !== opt.value) {
-                    e.currentTarget.style.backgroundColor = '#f9fafb';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (value !== opt.value) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  } else {
-                    e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  }
-                }}
-                className="font-diatype"
-              >
-                {opt.label}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+      {isOpen && (
+        <div
+          style={{
+            position: 'absolute',
+            ...(openUpward
+              ? { bottom: '100%', marginBottom: '4px' }
+              : { top: '100%', marginTop: '4px' }),
+            left: 0,
+            right: 0,
+            zIndex: 50,
+            backgroundColor: 'white',
+            border: '1px solid #d1d5db',
+            borderRadius: '12px',
+            boxShadow:
+              '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            maxHeight: '200px',
+            overflowY: 'auto',
+          }}
+          className="font-diatype [&::-webkit-scrollbar]:hidden"
+        >
+          {options.map(opt => (
+            <div
+              key={opt.value}
+              onClick={() => handleSelect(opt.value)}
+              style={{
+                padding: '8px 12px',
+                cursor: 'pointer',
+                backgroundColor:
+                  value === opt.value ? '#f3f4f6' : 'transparent',
+                fontWeight: value === opt.value ? '500' : '400',
+              }}
+              className="font-diatype text-sm hover:bg-gray-50"
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

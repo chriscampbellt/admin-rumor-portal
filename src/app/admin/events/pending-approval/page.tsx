@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import {
@@ -20,13 +21,17 @@ import {
   Users2,
 } from 'lucide-react';
 
+import ApproveEvent from '@/components/ui/ApproveEvent';
+import CancelEventDailog from '@/components/ui/CancelEvent';
 import Checkbox from '@/components/ui/Checkbox';
-// Assuming these are your components/utilities
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
 import DataTable from '@/components/ui/DataTable';
+import PublishEventDialog from '@/components/ui/PublishEventDialog';
+import RejectEventDailog from '@/components/ui/RejectEventDailog';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import useToggle from '@/lib/useToggle';
 import { cn } from '@/lib/utils';
 
 interface UserData {
@@ -116,6 +121,52 @@ const data: UserData[] = [
 
 export default function PendingApprovalTable() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const {
+    isOpen: isApproveOpen,
+    open: openApprove,
+    toggle: toggleApprove,
+  } = useToggle(false);
+  const {
+    isOpen: isRejectOpen,
+    open: openReject,
+    toggle: toggleReject,
+  } = useToggle(false);
+  const {
+    isOpen: isPublishOpen,
+    open: openPublish,
+    toggle: togglePublish,
+  } = useToggle(false);
+  const {
+    isOpen: isCancelOpen,
+    open: openCancel,
+    toggle: toggleCancel,
+  } = useToggle(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
+  const togglePopup = () => setIsPopupOpen(prev => !prev);
+  const router = useRouter();
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        setIsPopupOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const columnHelper = createColumnHelper<UserData>();
   type TabId = 'drafts' | 'invited' | 'requests' | 'confirmed' | 'declined';
   const [activeTab, setActiveTab] = useState<TabId>('drafts');
@@ -211,18 +262,69 @@ export default function PendingApprovalTable() {
 
   return (
     <>
-      <div className="mx-4 mt-4 flex justify-end font-diatype lg:mx-6">
-        <div className="flex min-w-[230px] items-center justify-between gap-1 rounded-full bg-ui-primaryBorder px-6 py-3">
+      <div
+        className="relative mx-4 mt-4 flex justify-end font-diatype lg:mx-6"
+        ref={dropdownRef}
+      >
+        <div
+          onClick={toggleDropdown}
+          className="flex min-w-[230px] cursor-pointer items-center justify-between gap-1 rounded-full bg-ui-primaryBorder px-6 py-3"
+        >
           <div>
             <p className="text-xs text-ui-textPrimaryColor">Status</p>
             <p className="text-[16px] text-ui-neutralSurfaceOnColor">
               Pending Approval
             </p>
           </div>
-          <ChevronDown size={20} className="text-[rgba(0, 0, 0, 0.56)]" />
+          <ChevronDown
+            size={20}
+            className={`transform text-[rgba(0,0,0,0.56)] transition-transform duration-300 ${
+              isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            }`}
+          />
+        </div>
+        {isDropdownOpen && (
+          <div className="absolute right-1 top-18 z-10 w-[220px] rounded-8 border border-ui-neutralBorderComponent bg-white font-diatype text-ui-neutralSurfaceOnColor shadow-lg">
+            <button
+              onClick={() => {
+                openApprove();
+                setIsDropdownOpen(false);
+              }}
+              className="block w-full rounded-t-8 border-b p-3 text-left text-[16px] hover:bg-gray-100"
+            >
+              Approve Event
+            </button>
+            <button
+              onClick={() => {
+                openReject();
+                setIsDropdownOpen(false);
+              }}
+              className="block w-full whitespace-nowrap rounded-b-8 p-3 text-left text-[16px] text-ui-neutralDarkRed hover:bg-gray-100"
+            >
+              Reject Event
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="mx-4 mt-5 rounded-8 bg-ui-componentsAlertWarningBackground p-4 lg:mx-6">
+        <div className="flex items-center gap-2">
+          <div className="h-4 w-4">
+            <Image
+              src="/images/time-icon.svg"
+              alt="Warning"
+              width={16}
+              height={16}
+            />
+          </div>
+          <p className="font-diatype text-sm text-ui-neutralSurfaceOnColor">
+            The Host&apos;s event is scheduled to publish on [Date at Time] and
+            will go live on the Discovery Feed.&nbsp;&nbsp;
+            <button className="underline" onClick={openPublish}>
+              Click Here to Publish Now.
+            </button>
+          </p>
         </div>
       </div>
-
       <div className="m-4 flex flex-col gap-6 lg:m-6 2xl:flex-row 2xl:flex-wrap">
         <div className="flex w-full flex-col items-center gap-6 rounded-[24px] bg-white p-6 md:flex-row md:flex-wrap lg:flex-1">
           <div className="w-full flex-shrink-0 lg:max-w-80">
@@ -314,7 +416,10 @@ export default function PendingApprovalTable() {
             </div>
           </div>
 
-          <div className="relative flex items-center gap-2 self-start">
+          <div
+            className="relative flex items-center gap-2 self-start"
+            ref={popupRef}
+          >
             <CommonButton
               leftIcon={<Eye size={18} />}
               className="rounded-full bg-ui-neutralSurfaceOnColor px-3.5 py-2 text-sm text-white transition-colors hover:bg-gray-800 lg:text-base"
@@ -324,9 +429,34 @@ export default function PendingApprovalTable() {
             <CommonButton className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-neutralInputBg hover:text-ui-neutralSurfaceOnColor">
               <Pencil size={18} />
             </CommonButton>
-            <CommonButton className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-neutralInputBg hover:text-ui-neutralSurfaceOnColor">
+            <CommonButton
+              onClick={togglePopup}
+              className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
+            >
               <MoreHorizontal size={20} />
             </CommonButton>
+            {isPopupOpen && (
+              <div className="absolute right-0 top-12 z-10 w-[150px] rounded-8 border border-ui-neutralBorderComponent bg-white font-diatype text-ui-neutralSurfaceOnColor shadow-lg">
+                <button
+                  onClick={() => {
+                    setIsPopupOpen(false);
+                    router.push('/admin/events/duplicate');
+                  }}
+                  className="block w-full rounded-t-8 px-3 py-2 text-left text-sm hover:bg-gray-100"
+                >
+                  Duplicate Event
+                </button>
+                <button
+                  onClick={() => {
+                    openCancel();
+                    setIsPopupOpen(false);
+                  }}
+                  className="block w-full whitespace-nowrap rounded-b-8 px-3 py-2 text-left text-sm text-ui-neutralDarkRed hover:bg-gray-100"
+                >
+                  Cancel Event
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full space-y-5 rounded-[24px] bg-white p-6 2xl:w-1/4">
@@ -460,6 +590,10 @@ export default function PendingApprovalTable() {
 
         <DataTable columns={columns} data={data} selectable />
       </div>
+      <ApproveEvent isOpen={isApproveOpen} onClose={toggleApprove} />
+      <RejectEventDailog isOpen={isRejectOpen} onClose={toggleReject} />
+      <PublishEventDialog isOpen={isPublishOpen} onClose={togglePublish} />
+      <CancelEventDailog isOpen={isCancelOpen} onClose={toggleCancel} />
     </>
   );
 }
