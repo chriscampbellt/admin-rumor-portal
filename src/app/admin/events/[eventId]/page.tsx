@@ -27,7 +27,17 @@ import { Card } from '@/components/ui/card';
 import useToggle from '@/lib/useToggle';
 import { cn } from '@/lib/utils';
 
-import { EventData } from '../page';
+interface EventData {
+  id: number;
+  icon?: React.ReactNode;
+  eventName: string;
+  host?: string;
+  eventDate?: string;
+  eventType?: string;
+  city?: string;
+  visibility?: string;
+  status?: string;
+}
 
 const Pill = ({
   label,
@@ -77,7 +87,7 @@ const Pill = ({
   );
 };
 
-export const data: EventData[] = [
+const data: EventData[] = [
   {
     id: 1,
     eventName: 'Palm Tree Music Festival The Hamptons',
