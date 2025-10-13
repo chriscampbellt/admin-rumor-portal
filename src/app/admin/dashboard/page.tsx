@@ -70,7 +70,7 @@ const events: Event[] = [
   },
 ];
 
-export const attendees: Attendee[] = [
+const attendees: Attendee[] = [
   {
     name: 'Alix Earle',
     events: 189,
