@@ -33,11 +33,10 @@ const Upload: React.FC<UploadProps> = ({
   disabled = false,
   multiple = false,
   onChange,
-  onFileRemove,
   uploadLimit,
   defaultFiles = [],
   className = '',
-  heightClass = 'md:h-[540px]',
+  heightClass = 'md:h-[320px]',
   widthClass = 'md:w-[400px]',
   uploadText,
   helperText,
@@ -46,7 +45,7 @@ const Upload: React.FC<UploadProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [error, setError] = useState(false); // track error state
+  const [error, setError] = useState(false);
   const { push } = useToast();
 
   useEffect(() => {
@@ -127,12 +126,6 @@ const Upload: React.FC<UploadProps> = ({
       onChange?.(updatedFiles, files);
     }
     e.target.value = '';
-  };
-
-  const removeFile = (fileIndex: number) => {
-    const updatedList = files.filter((_, i) => i !== fileIndex);
-    setFiles(updatedList);
-    onFileRemove?.(updatedList);
   };
 
   const triggerUpload = (e: MouseEvent<HTMLDivElement>) => {
@@ -219,7 +212,7 @@ const Upload: React.FC<UploadProps> = ({
                     <img
                       src={fileURL}
                       alt={file.name}
-                      className="h-full w-full rounded-[31px] object-cover"
+                      className="h-full max-h-[200px] w-full rounded-[31px] object-cover"
                     />
                   )}
                   {isVideo && (
