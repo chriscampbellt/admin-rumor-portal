@@ -159,7 +159,11 @@ const data: EventData[] = [
     status: 'Pending Approval',
   },
 ];
-
+const eventStats = [
+  { label: 'Pending Approval', count: 25 },
+  { label: 'Upcoming', count: 23 },
+  { label: 'Past', count: 5 },
+];
 export default function EventTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const { isOpen, open, toggle } = useToggle();
@@ -373,7 +377,7 @@ export default function EventTable() {
             )}
           </div>
         </div>
-        <EventStatusSummary />
+        <EventStatusSummary stats={eventStats} />
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-4">
             <CommonButton

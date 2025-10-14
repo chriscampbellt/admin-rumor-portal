@@ -25,6 +25,7 @@ interface UploadProps {
   widthClass?: string;
   uploadText?: React.ReactNode;
   helperText?: React.ReactNode;
+  editButton?: boolean;
 }
 
 const Upload: React.FC<UploadProps> = ({
@@ -36,10 +37,11 @@ const Upload: React.FC<UploadProps> = ({
   uploadLimit,
   defaultFiles = [],
   className = '',
-  heightClass = 'md:h-[320px]',
+  heightClass = 'md:h-[500px]',
   widthClass = 'md:w-[400px]',
   uploadText,
   helperText,
+  editButton = true,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
@@ -168,34 +170,51 @@ const Upload: React.FC<UploadProps> = ({
       ) : files.length === 0 ? (
         <div
           onClick={triggerUpload}
-          className="flex h-full cursor-pointer flex-col items-center justify-center p-6"
+          className={`flex h-full cursor-pointer ${editButton ? 'items-center justify-center' : 'items-end justify-end'} flex-col p-6`}
         >
-          <div className="flex flex-col items-center text-center">
-            <div className="mb-3">
-              <Image
-                src="/images/upload-01.svg"
-                width={24}
-                height={24}
-                alt="Upload Icon"
-              />
-            </div>
-            {uploadText ?? (
-              <p className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                Drag & Drop file here <br /> &nbsp; or{' '}
-                <span className="text-sm font-medium underline">
-                  upload a file
-                </span>
-                &nbsp; from your computer
-              </p>
-            )}
+          {editButton ? (
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3">
+                <Image
+                  src="/images/upload-01.svg"
+                  width={24}
+                  height={24}
+                  alt="Upload Icon"
+                />
+              </div>
+              {uploadText ?? (
+                <p className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                  Drag & Drop file here <br /> &nbsp; or{' '}
+                  <span className="text-sm font-medium underline">
+                    upload a file
+                  </span>
+                  &nbsp; from your computer
+                </p>
+              )}
 
-            {helperText ?? (
-              <p className="pt-2 font-diatype text-sm font-medium text-ui-neutralContentLight">
-                Only <span className="text-ui-neutralSurfaceOnColor">PDF</span>{' '}
-                files allowed
+              {helperText ?? (
+                <p className="pt-2 font-diatype text-sm font-medium text-ui-neutralContentLight">
+                  Only{' '}
+                  <span className="text-ui-neutralSurfaceOnColor">PDF</span>{' '}
+                  files allowed
+                </p>
+              )}
+            </div>
+          ) : (
+            <div>
+              <div className="!-ml-10 self-start">
+                <Image
+                  src="/images/Edit button.svg"
+                  width={44}
+                  height={44}
+                  alt="Upload Icon"
+                />
+              </div>
+              <p className="pt-5 font-diatype text-sm font-normal text-ui-textSubtitle">
+                You can upload JPEG, PNG, PDF
               </p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="relative flex h-full w-full flex-col">
@@ -207,12 +226,15 @@ const Upload: React.FC<UploadProps> = ({
               const isPdf = file.type === 'application/pdf';
 
               return (
-                <div key={index} className="h-full w-full">
+                <div
+                  key={index}
+                  className="flex h-full w-full flex-col items-center justify-center"
+                >
                   {isImage && (
                     <img
                       src={fileURL}
                       alt={file.name}
-                      className="h-full max-h-[200px] w-full rounded-[31px] object-cover"
+                      className="h-full w-full rounded-[31px] object-cover"
                     />
                   )}
                   {isVideo && (
@@ -223,7 +245,7 @@ const Upload: React.FC<UploadProps> = ({
                     />
                   )}
                   {isPdf && (
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex h-full flex-col items-center justify-center gap-2">
                       <FileText size={40} className="text-red-500" />
                       <p className="text-sm font-medium text-ui-neutralSurfaceOnColor">
                         {file.name}

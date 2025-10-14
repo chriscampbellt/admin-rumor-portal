@@ -6,6 +6,7 @@ interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  discription?: string;
   children: ReactNode;
   icon?: ReactNode;
   showCloseButton?: boolean;
@@ -17,6 +18,7 @@ const Dialog: React.FC<DialogProps> = ({
   isOpen,
   onClose,
   title,
+  discription,
   children,
   icon,
   showCloseButton = true,
@@ -57,16 +59,27 @@ const Dialog: React.FC<DialogProps> = ({
         {/* Header */}
         <div
           className={`flex items-center justify-between ${
-            !icon && !title ? '' : 'border-b border-ui-neutralBorderSupport'
+            (!icon && !title) || discription
+              ? ''
+              : 'border-b border-ui-neutralBorderSupport'
           } px-4 py-3 sm:px-6 sm:py-4`}
         >
           <div className="flex items-center gap-3">
             {icon && <div className="text-gray-600">{icon}</div>}
-            {title && (
-              <h2 className="text-lg font-medium text-ui-neutralSurfaceOnColor sm:text-xl">
-                {title}
-              </h2>
-            )}
+            <div>
+              {title && (
+                <h2
+                  className={`${discription ? 'pb-2 font-romie text-xl font-bold sm:text-2xl' : 'pb-0 font-diatype text-lg font-medium sm:text-xl'} text-ui-neutralSurfaceOnColor`}
+                >
+                  {title}
+                </h2>
+              )}
+              {discription && (
+                <p className="font-diatype text-[12px] !text-ui-textTertiary">
+                  {discription}
+                </p>
+              )}
+            </div>
           </div>
 
           {showCloseButton && (

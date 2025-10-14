@@ -99,6 +99,8 @@ const config: Config = {
           mutedGreen: '#CBDDB5',
           monoBlack: '#1E1E1E',
           primaryBorder: '#D5D5D5',
+          textSubtitle: '#BDBDBD',
+          bgLightYellow: '#DCCCA8',
         },
         heading: {
           black: '#1D2126',
