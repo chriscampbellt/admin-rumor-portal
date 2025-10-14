@@ -20,6 +20,11 @@ const sidebarItems = [
     href: { pathname: '/admin/events' },
     icon: LucideZap,
   },
+  {
+    title: 'Hosts',
+    href: { pathname: '/admin/hosts' },
+    icon: LucideZap,
+  },
 ];
 
 export default function DashboardLayout({
@@ -51,9 +56,20 @@ export default function DashboardLayout({
         showBackButton: true,
         backUrl: '/admin/events',
       };
+    } else if (pathname.match('/admin/events/duplicate')) {
+      return {
+        title: '',
+        showBackButton: true,
+        backUrl: '/admin/events/pending-approval',
+      };
     } else if (pathname.match('/admin/events')) {
       return {
         title: 'Events',
+        showBackButton: false,
+      };
+    } else if (pathname.match('/admin/hosts')) {
+      return {
+        title: 'Hosts',
         showBackButton: false,
       };
     }

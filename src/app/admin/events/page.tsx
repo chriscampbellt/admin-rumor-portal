@@ -365,10 +365,14 @@ export default function EventTable() {
         ] as ColumnDef<EventData>[])
       : []),
   ];
-
+  const eventStats = [
+    { label: 'Pending Approval', count: 25 },
+    { label: 'Upcoming', count: 23 },
+    { label: 'Past', count: 5 },
+  ];
   return (
     <div className="px-6 py-8 2xl:px-8">
-      <EventStatusSummary />
+      <EventStatusSummary stats={eventStats} />
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-4">
           <CommonButton

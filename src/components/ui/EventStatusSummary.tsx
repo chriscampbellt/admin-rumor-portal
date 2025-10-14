@@ -2,15 +2,22 @@
 
 import React from 'react';
 
-export default function EventStatusSummary() {
-  const stats = [
-    { label: 'Pending Approval', count: 25 },
-    { label: 'Upcoming', count: 23 },
-    { label: 'Past', count: 5 },
-  ];
+interface StatItem {
+  label: string;
+  count: number | string;
+}
 
+interface EventStatusSummaryProps {
+  stats: StatItem[];
+  className?: string;
+}
+
+const EventStatusSummary: React.FC<EventStatusSummaryProps> = ({
+  stats,
+  className,
+}) => {
   return (
-    <div className="flex items-center gap-5 pb-6">
+    <div className={`flex items-center gap-5 py-2 ${className ?? ''}`}>
       {stats.map((item, idx) => (
         <div
           key={idx}
@@ -26,4 +33,6 @@ export default function EventStatusSummary() {
       ))}
     </div>
   );
-}
+};
+
+export default EventStatusSummary;

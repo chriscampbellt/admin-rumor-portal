@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import Image from 'next/image';
+
 import {
   ChevronDown,
   Edit2,
@@ -123,17 +125,13 @@ export default function DuplicateEventPage() {
                 />
 
                 {showMap && (
-                  <div className="h-40 overflow-hidden rounded-lg bg-gray-200">
-                    <img
-                      src="/images/Maps.png"
-                      alt="Map"
-                      className="h-full w-full object-cover"
-                      onError={e => {
-                        e.currentTarget.src =
-                          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='160' viewBox='0 0 600 160'%3E%3Crect fill='%23e5e7eb' width='600' height='160'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%239ca3af'%3EMap Preview%3C/text%3E%3C/svg%3E";
-                      }}
-                    />
-                  </div>
+                  <Image
+                    src="/images/Maps.png"
+                    width={500}
+                    height={180}
+                    className="max-h-40 w-full rounded-xl object-cover"
+                    alt="Map"
+                  />
                 )}
 
                 <Checkbox
@@ -246,7 +244,7 @@ export default function DuplicateEventPage() {
                 Ticket Types<span className="font-serif">*</span>
               </h2>
 
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {['VIP', 'General Admission'].map(ticket => (
                   <div
                     key={ticket}
@@ -264,11 +262,11 @@ export default function DuplicateEventPage() {
 
                 <CommonButton
                   leftIcon={<Plus className="h-4 w-4" />}
-                  className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
+                  className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
                 >
                   Add Ticket Type
                 </CommonButton>
-                <div className="space-y-4 pt-4">
+                <div className="space-y-3 pt-3">
                   <label className="font-diatype text-[16px] font-medium">
                     Would you like to utilize QR codes for your event check-in?
                   </label>
@@ -292,138 +290,154 @@ export default function DuplicateEventPage() {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div className="rounded-[24px] bg-white p-6 shadow-sm">
               <h2 className="pb-6 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
                 Event Artwork<span className="font-serif">*</span>
               </h2>
-              <Upload uploadLimit={1} className="border-none" />
+              <Upload
+                uploadLimit={1}
+                className="!h-[320px] border-none"
+                widthClass="auto"
+                editButton={false}
+                uploadText
+                helperText
+                heightClass="auto"
+              />
             </div>
 
-            {/* <div className="rounded-[24px] bg-white p-6 shadow-sm">
-              <h2 className="mb-6 border-b border-neutral-100 pb-4 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
+            <div className="rounded-[24px] bg-white p-6 shadow-sm">
+              <h2 className="pb-6 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
                 Featured Talent
               </h2>
 
               <div className="mb-4 flex items-center justify-between rounded-lg bg-ui-neutralSurfaceBackground px-4 py-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gray-300"></div>
-                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">Emma Watson</span>
+                  <div className="h-10 w-10 rounded-full"></div>
+                  <span className="font-romie text-[16px] font-medium text-ui-neutralSurfaceOnColor">
+                    Emma Watson
+                  </span>
                 </div>
-                <div className="flex gap-2">
-                  <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                    <Edit2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                  </button>
-                  <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                    <Trash2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                  </button>
+                <div className="flex gap-4">
+                  <Edit2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <Trash2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
                 </div>
               </div>
 
               <CommonButton
                 leftIcon={<Plus className="h-4 w-4" />}
-                className="w-full rounded-full border-2 border-black bg-white py-3 font-diatype text-sm font-medium text-black hover:bg-black hover:text-white"
+                className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
               >
                 Add Featured Talent
               </CommonButton>
             </div>
 
             <div className="rounded-[24px] bg-white p-6 shadow-sm">
-              <h2 className="mb-6 border-b border-neutral-100 pb-4 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
+              <h2 className="pb-6 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
                 Event Collaborators
               </h2>
 
-              <div className="space-y-3">
+              <div className="space-y-5">
                 <div className="flex items-center justify-between rounded-lg bg-ui-neutralSurfaceBackground px-4 py-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-gray-300"></div>
-                    <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">Uncommon Entertainment</span>
+                    <div className="h-10 w-10 rounded-full"></div>
+                    <span className="font-romie text-[16px] font-medium text-ui-neutralSurfaceOnColor">
+                      Uncommon Entertainment
+                    </span>
+                    <span className="rounded-full bg-ui-neutralSurfaceSupport px-2 py-1 font-diatype text-[13px] font-normal">
+                      Co-Host
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-white px-3 py-1 font-diatype text-xs font-medium text-ui-neutralSurfaceOnColor">Co-Host</span>
-                    <span className="text-ui-neutralContentLight">🔒</span>
+                    <div className="flex gap-4">
+                      <Edit2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                      <Trash2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between rounded-lg bg-ui-neutralSurfaceBackground px-4 py-3">
+                <div className="flex flex-col gap-2 rounded-lg bg-ui-neutralSurfaceBackground px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-ui-neutralSurfaceSupport font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                      KT
-                    </div>
-                    <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">King Tide</span>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-ui-neutralSurfaceSupport font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor"></div>
+                    <span className="font-romie text-[16px] font-medium text-ui-neutralSurfaceOnColor">
+                      King Tide
+                    </span>
+                    <span className="rounded-full bg-ui-neutralSurfaceSupport px-2 py-1 font-diatype text-[13px] font-normal">
+                      Guest List Contributor
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-white px-3 py-1 font-diatype text-xs font-medium text-ui-neutralSurfaceOnColor">Guest List Contributor</span>
-                    <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                      <Edit2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                    </button>
-                    <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                      <Trash2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                    </button>
+                    <div className="flex gap-4">
+                      <Edit2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                      <Trash2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                    </div>
                   </div>
                 </div>
 
                 <CommonButton
                   leftIcon={<Plus className="h-4 w-4" />}
-                  className="w-full rounded-full border-2 border-black bg-white py-3 font-diatype text-sm font-medium text-black hover:bg-black hover:text-white"
+                  className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
                 >
                   Add Event Collaborators
                 </CommonButton>
               </div>
             </div>
-
             <div className="rounded-[24px] bg-white p-6 shadow-sm">
-              <h2 className="mb-6 flex items-center gap-2 border-b border-neutral-100 pb-4 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
+              <h2 className="flex items-center gap-2 font-diatype text-base font-medium text-ui-neutralSurfaceOnColor">
                 Questionnaire
-                <Tooltip
-                  trigger={<Info className="h-4 w-4 text-ui-neutralContentLight" />}
-                  content="Ask guests questions when they RSVP via mobile app."
-                />
               </h2>
-
-              <p className="mb-4 font-diatype text-sm text-ui-neutralContentBody">
+              <p className="mb-6 font-diatype text-sm text-ui-neutralContentBody">
                 Ask guests questions when they RSVP via mobile app.
               </p>
 
-              <div className="space-y-3">
-                {['What is your favorite place?', 'Where is the place?'].map((question, idx) => (
-                  <div key={idx} className="flex items-center justify-between rounded-lg bg-ui-neutralSurfaceBackground px-4 py-3">
-                    <span className="font-diatype text-sm text-ui-neutralSurfaceOnColor">{question}</span>
-                    <div className="flex gap-2">
-                      <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                        <Edit2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                      </button>
-                      <button className="rounded-full bg-white p-2 hover:bg-gray-100">
-                        <Trash2 className="h-4 w-4 text-ui-neutralSurfaceOnColor" />
-                      </button>
+              <div className="space-y-5">
+                {['What is your favorite place?', 'Where is the place?'].map(
+                  (question, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between rounded-lg border-b border-ui-neutralPlaceholder bg-ui-neutralSurfaceBackground px-4 py-5"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src="/images/AdornmentStart.svg"
+                          width={24}
+                          height={24}
+                          alt="Map"
+                        />
+                        <span className="font-romie text-[16px] font-medium text-ui-neutralSurfaceOnColor">
+                          {question}
+                        </span>
+                      </div>
+                      <div className="flex gap-4">
+                        <Edit2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                        <Trash2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
 
                 <CommonButton
                   leftIcon={<Plus className="h-4 w-4" />}
-                  className="w-full rounded-full border-2 border-black bg-white py-3 font-diatype text-sm font-medium text-black hover:bg-black hover:text-white"
+                  className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
                 >
                   Add Question
                 </CommonButton>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
 
-        {/* <div className="flex flex-wrap justify-start gap-3 px-6 pt-6 lg:justify-end">
-          <CommonButton
-            className="w-full max-w-[250px] py-3 font-diatype bg-transparent text-ui-neutralSurfaceOnColor border border-ui-neuteralSurfaceSecondary hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
-          >
+        <div className="flex flex-wrap justify-start gap-3 px-6 pt-6 lg:justify-end">
+          <CommonButton className="w-full max-w-[250px] border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white">
             Save as Draft
           </CommonButton>
           <CommonButton
             type="submit"
-            className="w-full max-w-[250px] py-3 font-diatype bg-ui-bgBlur text-white  hover:bg-ui-neuteralSurfaceSecondary hover:text-ui-neutralSurfaceOnColor"
+            className="w-full max-w-[250px] bg-ui-bgBlur py-3 font-diatype text-white hover:bg-ui-neuteralSurfaceSecondary hover:text-ui-neutralSurfaceOnColor"
           >
             Submit Event
           </CommonButton>
-        </div> */}
+        </div>
       </div>
     </div>
   );

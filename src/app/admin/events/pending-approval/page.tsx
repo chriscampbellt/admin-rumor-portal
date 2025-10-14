@@ -6,7 +6,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { da } from 'date-fns/locale';
 import {
+  ArrowRight,
   Calendar,
   ChevronDown,
   ChevronRight,
@@ -17,6 +19,7 @@ import {
   Pencil,
   Plus,
   Search,
+  Star,
   UserCircle,
   Users2,
 } from 'lucide-react';
@@ -27,6 +30,8 @@ import Checkbox from '@/components/ui/Checkbox';
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
 import DataTable from '@/components/ui/DataTable';
+import DisplayedCollaborators from '@/components/ui/DisplayedCollaborators';
+import EventRating from '@/components/ui/EventRating';
 import PublishEventDialog from '@/components/ui/PublishEventDialog';
 import RejectEventDailog from '@/components/ui/RejectEventDailog';
 import { Badge } from '@/components/ui/badge';
@@ -123,26 +128,15 @@ export default function PendingApprovalTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const {
-    isOpen: isApproveOpen,
-    open: openApprove,
-    toggle: toggleApprove,
-  } = useToggle(false);
-  const {
-    isOpen: isRejectOpen,
-    open: openReject,
-    toggle: toggleReject,
-  } = useToggle(false);
-  const {
-    isOpen: isPublishOpen,
-    open: openPublish,
-    toggle: togglePublish,
-  } = useToggle(false);
-  const {
-    isOpen: isCancelOpen,
-    open: openCancel,
-    toggle: toggleCancel,
-  } = useToggle(false);
+  const useDialogs = () => {
+    const approve = useToggle(false);
+    const reject = useToggle(false);
+    const publish = useToggle(false);
+    const cancel = useToggle(false);
+    const collaborators = useToggle(false);
+    return { approve, reject, publish, cancel, collaborators };
+  };
+  const dialogs = useDialogs();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
@@ -287,7 +281,7 @@ export default function PendingApprovalTable() {
           <div className="absolute right-1 top-18 z-10 w-[220px] rounded-8 border border-ui-neutralBorderComponent bg-white font-diatype text-ui-neutralSurfaceOnColor shadow-lg">
             <button
               onClick={() => {
-                openApprove();
+                dialogs.approve.open();
                 setIsDropdownOpen(false);
               }}
               className="block w-full rounded-t-8 border-b p-3 text-left text-[16px] hover:bg-gray-100"
@@ -296,7 +290,7 @@ export default function PendingApprovalTable() {
             </button>
             <button
               onClick={() => {
-                openReject();
+                dialogs.reject.open();
                 setIsDropdownOpen(false);
               }}
               className="block w-full whitespace-nowrap rounded-b-8 p-3 text-left text-[16px] text-ui-neutralDarkRed hover:bg-gray-100"
@@ -319,7 +313,7 @@ export default function PendingApprovalTable() {
           <p className="font-diatype text-sm text-ui-neutralSurfaceOnColor">
             The Host&apos;s event is scheduled to publish on [Date at Time] and
             will go live on the Discovery Feed.&nbsp;&nbsp;
-            <button className="underline" onClick={openPublish}>
+            <button className="underline" onClick={dialogs.publish.open}>
               Click Here to Publish Now.
             </button>
           </p>
@@ -344,8 +338,8 @@ export default function PendingApprovalTable() {
             </Card>
           </div>
 
-          <div className="flex-1 space-y-6">
-            <div className="space-y-6">
+          <div className="flex-1 space-y-4">
+            <div className="space-y-5">
               <div className="flex flex-wrap items-center gap-2">
                 <Calendar className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
                 <span className="font-diatype text-sm text-ui-neutralContentBody">
@@ -409,9 +403,24 @@ export default function PendingApprovalTable() {
                 <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
                   Uncommon Entertainment & H Wood Group
                 </span>
-                <button className="text-zinc-500 hover:text-zinc-700">
-                  <ChevronRight className="h-4 w-4" />
-                </button>
+                <CommonButton
+                  onClick={dialogs.collaborators.open}
+                  className="rounded-full border border-ui-bgBlur bg-transparent px-2.5 py-1.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
+                >
+                  <ArrowRight size={18} />
+                </CommonButton>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Star className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                <span className="font-diatype text-sm text-ui-neutralContentBody">
+                  Average Rating
+                </span>
+                <span className="flex items-center gap-1 font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                  5.0 <Star size={20} fill="#000000" />
+                  <Star size={20} fill="#000000" />
+                  <Star size={20} fill="#000000" />
+                  <span className="text-ui-neutralPlaceholder">(10)</span>
+                </span>
               </div>
             </div>
           </div>
@@ -448,7 +457,7 @@ export default function PendingApprovalTable() {
                 </button>
                 <button
                   onClick={() => {
-                    openCancel();
+                    dialogs.cancel.open();
                     setIsPopupOpen(false);
                   }}
                   className="block w-full whitespace-nowrap rounded-b-8 px-3 py-2 text-left text-sm text-ui-neutralDarkRed hover:bg-gray-100"
@@ -590,10 +599,27 @@ export default function PendingApprovalTable() {
 
         <DataTable columns={columns} data={data} selectable />
       </div>
-      <ApproveEvent isOpen={isApproveOpen} onClose={toggleApprove} />
-      <RejectEventDailog isOpen={isRejectOpen} onClose={toggleReject} />
-      <PublishEventDialog isOpen={isPublishOpen} onClose={togglePublish} />
-      <CancelEventDailog isOpen={isCancelOpen} onClose={toggleCancel} />
+      <EventRating />
+      <ApproveEvent
+        isOpen={dialogs.approve.isOpen}
+        onClose={dialogs.approve.toggle}
+      />
+      <RejectEventDailog
+        isOpen={dialogs.reject.isOpen}
+        onClose={dialogs.reject.toggle}
+      />
+      <PublishEventDialog
+        isOpen={dialogs.publish.isOpen}
+        onClose={dialogs.publish.toggle}
+      />
+      <CancelEventDailog
+        isOpen={dialogs.cancel.isOpen}
+        onClose={dialogs.cancel.toggle}
+      />
+      <DisplayedCollaborators
+        isOpen={dialogs.collaborators.isOpen}
+        onClose={dialogs.collaborators.toggle}
+      />
     </>
   );
 }
