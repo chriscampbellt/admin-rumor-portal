@@ -128,7 +128,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
             >
               {label}
               {required && (
-                <span className="ml-1 text-ui-neutralDarkRed">*</span>
+                <span className="text-ui-neutralSurfaceOnColor">*</span>
               )}
             </label>
           )}
@@ -173,7 +173,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
         >
           {label}
           {required && (
-            <span className="ml-1 font-serif text-ui-textError">*</span>
+            <span className="font-serif text-ui-neutralSurfaceOnColor">*</span>
           )}
         </Label>
       )}

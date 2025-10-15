@@ -3,15 +3,20 @@
 import React, { useState } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import { Plus, Search } from 'lucide-react';
 
+import ApproveHostSelection from '@/components/ui/ApproveHostSelection';
 import Checkbox from '@/components/ui/Checkbox';
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
 import DataTable from '@/components/ui/DataTable';
 import EventStatusSummary from '@/components/ui/EventStatusSummary';
+import InviteHostDialog from '@/components/ui/InviteHostDailog';
+import WaitlistDailog from '@/components/ui/WaitlistDailog';
+import useToggle from '@/lib/useToggle';
 
 interface HostData {
   id: number;
@@ -30,6 +35,12 @@ interface HostData {
 
 const Host: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const inviteHostToggle = useToggle(false);
+  const approveToggle = useToggle(false);
+  const waitlistToggle = useToggle(false);
+  const selectedCount = Object.keys(rowSelection).length;
   const stats = [
     { label: 'NEW APPLICANTS', count: 12 },
     { label: 'ACTIVE HOSTS', count: 23 },
@@ -58,14 +69,18 @@ const Host: React.FC = () => {
       accessorKey: 'profileName',
       header: 'Profile Name',
       cell: ({ row }) => {
-        const { profileName } = row.original;
+        const { profileName, id } = row.original;
+        const hostUrl = `/admin/hosts/${id}`;
         const initials = profileName
           ?.split(' ')
           .map(n => n[0])
           .join('')
           .slice(0, 2);
         return (
-          <div className="flex items-center gap-3">
+          <div
+            className="flex cursor-pointer items-center gap-3"
+            onClick={() => router.push(hostUrl)}
+          >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-sm font-medium text-white">
               {initials}
             </div>
@@ -336,73 +351,269 @@ const Host: React.FC = () => {
       source: 'Application',
       referredBy: '—',
     },
+    {
+      id: 12,
+      profileName: 'Reebok Sports',
+      contact: 'Jordan Smith',
+      email: 'jordan@reebok.com',
+      website: 'www.reebok.com',
+      events: 8,
+      status: 'New Applicant',
+      phone: '+1 212 459 2231',
+      appliedOn: '07/01/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 13,
+      profileName: 'Under Armour',
+      contact: 'Lucy Hale',
+      email: 'lucy.hale@underarmour.com',
+      website: 'www.ua.com',
+      events: 4,
+      status: 'Waitlisted',
+      phone: '+1 404 293 8871',
+      appliedOn: '05/29/2024',
+      hostSince: '—',
+      source: 'Referral',
+      referredBy: 'Tailor Tylenson',
+    },
+    {
+      id: 14,
+      profileName: 'Columbia Outdoor',
+      contact: 'Tom Hardy',
+      email: 'tom.hardy@columbiaoutdoor.com',
+      website: 'www.columbia.com',
+      events: 6,
+      status: 'Active',
+      phone: '+1 917 302 7710',
+      appliedOn: '06/20/2024',
+      hostSince: '07/01/2024',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 15,
+      profileName: 'Asics Japan',
+      contact: 'Rina Kobayashi',
+      email: 'rina.k@asics.co.jp',
+      website: 'www.asics.com',
+      events: 9,
+      status: 'Active',
+      phone: '+81 80 1234 5678',
+      appliedOn: '07/03/2024',
+      hostSince: '07/15/2024',
+      source: 'Application',
+      referredBy: 'Karl Jensen',
+    },
+    {
+      id: 16,
+      profileName: 'New Balance Ltd',
+      contact: 'John Carter',
+      email: 'john.carter@newbalance.com',
+      website: 'www.newbalance.com',
+      events: 3,
+      status: 'Waitlisted',
+      phone: '+1 503 310 8912',
+      appliedOn: '06/08/2024',
+      hostSince: '—',
+      source: 'Referral',
+      referredBy: 'Nike Inc',
+    },
+    {
+      id: 17,
+      profileName: 'Champion USA',
+      contact: 'Olivia Taylor',
+      email: 'olivia@champion.com',
+      website: 'www.champion.com',
+      events: 1,
+      status: 'New Applicant',
+      phone: '+1 212 981 0078',
+      appliedOn: '08/10/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 18,
+      profileName: 'Champion USA',
+      contact: 'Olivia Taylor',
+      email: 'olivia@champion.com',
+      website: 'www.champion.com',
+      events: 1,
+      status: 'New Applicant',
+      phone: '+1 212 981 0078',
+      appliedOn: '08/10/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 19,
+      profileName: 'Champion USA',
+      contact: 'Olivia Taylor',
+      email: 'olivia@champion.com',
+      website: 'www.champion.com',
+      events: 1,
+      status: 'New Applicant',
+      phone: '+1 212 981 0078',
+      appliedOn: '08/10/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 20,
+      profileName: 'Champion USA',
+      contact: 'Olivia Taylor',
+      email: 'olivia@champion.com',
+      website: 'www.champion.com',
+      events: 1,
+      status: 'New Applicant',
+      phone: '+1 212 981 0078',
+      appliedOn: '08/10/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
+    {
+      id: 21,
+      profileName: 'Champion USA',
+      contact: 'Olivia Taylor',
+      email: 'olivia@champion.com',
+      website: 'www.champion.com',
+      events: 1,
+      status: 'New Applicant',
+      phone: '+1 212 981 0078',
+      appliedOn: '08/10/2024',
+      hostSince: '—',
+      source: 'Application',
+      referredBy: '—',
+    },
   ];
   return (
-    <div className="mx-6 font-diatype">
-      <div className="flex items-center justify-between gap-2">
-        <EventStatusSummary stats={stats} />
-        <CommonButton
-          leftIcon={<Plus size={16} />}
-          className="group mb-2 flex items-center gap-2 rounded-full border-2 border-black bg-black px-4 py-2 text-[14px] font-medium text-white hover:bg-white hover:text-black"
-        >
-          INVITE HOST
-        </CommonButton>
-      </div>
-      <div className="flex items-center justify-between gap-2 pb-2">
-        <div className="flex items-center gap-5">
+    <>
+      <div className="mx-6 font-diatype">
+        <div className="flex items-center justify-between gap-2">
+          <EventStatusSummary stats={stats} />
           <CommonButton
-            leftIcon={
-              <Image
-                src="/images/ViewColumnFilled.svg"
-                alt="Columns"
-                height={18}
-                width={18}
-              />
-            }
-            className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
+            onClick={inviteHostToggle.open}
+            leftIcon={<Plus size={16} />}
+            className="group mb-2 flex items-center gap-2 rounded-full border-2 border-black bg-black px-4 py-2 text-[14px] font-medium text-white hover:bg-white hover:text-black"
           >
-            Columns
-          </CommonButton>
-          <CommonButton
-            leftIcon={
-              <Image
-                src="/images/FilterListFilled.svg"
-                alt="Filters"
-                height={18}
-                width={18}
-              />
-            }
-            className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
-          >
-            Filters
-          </CommonButton>
-          <CommonButton
-            leftIcon={
-              <Image
-                src="/images/SaveAltFilled.svg"
-                alt="Export"
-                height={18}
-                width={18}
-              />
-            }
-            className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
-          >
-            Export
+            INVITE HOST
           </CommonButton>
         </div>
+        <div className="flex flex-col">
+          <div className="flex items-center justify-between gap-2 pb-2">
+            <div className="flex items-center gap-5">
+              <CommonButton
+                leftIcon={
+                  <Image
+                    src="/images/ViewColumnFilled.svg"
+                    alt="Columns"
+                    height={18}
+                    width={18}
+                  />
+                }
+                className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
+              >
+                Columns
+              </CommonButton>
+              <CommonButton
+                leftIcon={
+                  <Image
+                    src="/images/FilterListFilled.svg"
+                    alt="Filters"
+                    height={18}
+                    width={18}
+                  />
+                }
+                className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
+              >
+                Filters
+              </CommonButton>
+              <CommonButton
+                leftIcon={
+                  <Image
+                    src="/images/SaveAltFilled.svg"
+                    alt="Export"
+                    height={18}
+                    width={18}
+                  />
+                }
+                className="bg-transparent px-0 text-sm font-normal text-ui-bgBlur hover:bg-transparent hover:text-ui-bgBlur"
+              >
+                Export
+              </CommonButton>
+            </div>
 
-        <div className="border-b border-[rgba(0,0,0,0.42)]">
-          <CommonInput
-            icon={<Search className="text-[rgba(0,0,0,0.56)]" size={20} />}
-            placeholder="Search..."
-            value={searchQuery}
-            className="h-[42px] !min-h-0 border-none !px-2.5"
-            onChange={e => setSearchQuery(e.target.value)}
+            <div className="border-b border-[rgba(0,0,0,0.42)]">
+              <CommonInput
+                icon={<Search className="text-[rgba(0,0,0,0.56)]" size={20} />}
+                placeholder="Search..."
+                value={searchQuery}
+                className="h-[42px] !min-h-0 border-none !px-2.5"
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+          <DataTable
+            columns={columns}
+            data={data}
+            selectable
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
           />
         </div>
       </div>
-      <DataTable columns={columns} data={data} selectable />
-    </div>
+      <div className="flex items-center justify-between gap-1 rounded-br-28 bg-white px-6 py-3 font-diatype">
+        <div className="space-y-1">
+          <span className="text-sm font-medium text-ui-monoBlack">
+            Selected Hosts ({Math.min(selectedCount, 20)})
+          </span>
+          {selectedCount > 20 && (
+            <div className="-mr-4 flex justify-end">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#B2998F] text-sm font-medium text-white"
+                onClick={() => console.log('Action for selected hosts')}
+              >
+                +{selectedCount - 20}
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-3">
+          <CommonButton
+            onClick={waitlistToggle.open}
+            type="submit"
+            className="w-full min-w-[180px] border !border-ui-neuteralSurfaceSecondary bg-transparent py-2 font-diatype text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
+          >
+            Waitlist
+          </CommonButton>
+          <CommonButton
+            onClick={approveToggle.open}
+            type="submit"
+            className="w-full min-w-[180px] px-4 py-2 font-diatype"
+          >
+            Approve
+          </CommonButton>
+        </div>
+      </div>
+      <InviteHostDialog
+        isOpen={inviteHostToggle.isOpen}
+        onClose={inviteHostToggle.toggle}
+      />
+      <ApproveHostSelection
+        isOpen={approveToggle.isOpen}
+        onClose={approveToggle.toggle}
+      />
+      <WaitlistDailog
+        isOpen={waitlistToggle.isOpen}
+        onClose={waitlistToggle.toggle}
+      />
+    </>
   );
 };
 
