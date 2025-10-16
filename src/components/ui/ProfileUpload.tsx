@@ -4,7 +4,7 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
-import { Edit2Icon, UploadIcon } from 'lucide-react';
+import { Edit2Icon, FileUpIcon, UploadIcon } from 'lucide-react';
 
 import { useTheme } from '@/context/ThemeContext';
 
@@ -26,6 +26,7 @@ interface UploadProps {
   helperText?: string;
   subText?: string;
   showText?: boolean;
+  showUploadButton?: boolean;
 }
 
 const ProfileUpload: React.FC<UploadProps> = ({
@@ -40,6 +41,7 @@ const ProfileUpload: React.FC<UploadProps> = ({
   helperText = 'Upload an image of your talent',
   subText = 'Only JPG or PNG, Under 5 MB',
   showText = true,
+  showUploadButton = false,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
@@ -104,7 +106,9 @@ const ProfileUpload: React.FC<UploadProps> = ({
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col items-center justify-center p-6 transition">
+    <div
+      className={`mx-auto flex w-full flex-col justify-center ${showUploadButton ? 'max-w-full items-start px-5 py-3' : 'max-w-lg items-center p-6'} transition`}
+    >
       <input
         ref={fileInputRef}
         type="file"
@@ -119,32 +123,36 @@ const ProfileUpload: React.FC<UploadProps> = ({
       {files.length === 0 ? (
         <div
           onClick={triggerUpload}
-          className="flex h-full cursor-pointer flex-col items-center justify-center text-center"
+          className="flex h-full w-full cursor-pointer flex-col items-center justify-center text-center"
         >
-          <div className="relative mb-4 flex h-[140px] w-[140px] items-center justify-center rounded-full border border-dashed border-gray-300">
-            <Image
-              src={
-                theme === 'light'
-                  ? '/images/background-logo-light.svg'
-                  : '/images/background-logo-dark.svg'
-              }
-              alt="background-logo"
-              height={70}
-              width={70}
-            />
-            {showText && (
-              <button
-                type="button"
-                onClick={handleEditClick}
-                className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-ui-neutralSurfaceOnColor px-2.5 py-2.5 text-sm text-white transition-colors hover:bg-gray-700"
-              >
-                <Edit2Icon className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
+          {!showUploadButton && (
+            <div
+              className={`relative mb-4 flex h-[140px] ${showUploadButton ? 'w-full' : 'w-[140px]'} items-center justify-center rounded-full border border-dashed border-gray-300`}
+            >
+              <Image
+                src={
+                  theme === 'light'
+                    ? '/images/background-logo-light.svg'
+                    : '/images/background-logo-dark.svg'
+                }
+                alt="background-logo"
+                height={70}
+                width={70}
+              />
+              {showText && (
+                <button
+                  type="button"
+                  onClick={handleEditClick}
+                  className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-ui-neutralSurfaceOnColor px-2.5 py-2.5 text-sm text-white transition-colors hover:bg-gray-700"
+                >
+                  <Edit2Icon className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+          )}
 
           {/* If no text, show upload button */}
-          {!showText && (
+          {!showText && !showUploadButton && (
             <CommonButton
               onClick={() => handleEditClick}
               leftIcon={<UploadIcon size={16} className="group-hover:invert" />}
@@ -154,7 +162,16 @@ const ProfileUpload: React.FC<UploadProps> = ({
               Upload New Image
             </CommonButton>
           )}
-
+          {showUploadButton && (
+            <CommonButton
+              onClick={() => handleEditClick}
+              leftIcon={<FileUpIcon size={20} className="group-hover:invert" />}
+              type="button"
+              className="h-auto w-full rounded-full border-2 border-ui-lightBlack bg-ui-lightBlack py-3 text-[14px] font-medium text-white hover:border-black hover:bg-black"
+            >
+              Upload Image
+            </CommonButton>
+          )}
           {/* Instructional text */}
           {showText && (
             <>
@@ -197,13 +214,13 @@ const ProfileUpload: React.FC<UploadProps> = ({
             })}
           </div>
 
-          {showText && (
+          {(showText || showUploadButton) && (
             <button
               type="button"
               onClick={handleEditClick}
-              className="absolute bottom-14 right-12 flex h-8 w-8 items-center justify-center rounded-full bg-ui-neutralSurfaceOnColor px-2.5 py-2.5 text-sm text-white transition-colors hover:bg-gray-700"
+              className={`absolute ${showUploadButton ? 'bottom-2 right-2' : 'bottom-14 right-12'} flex h-8 w-8 items-center justify-center rounded-full ${showUploadButton ? 'bg-black' : 'bg-ui-neutralSurfaceOnColor'} p-2 text-sm text-white transition-colors hover:bg-gray-700`}
             >
-              <Edit2Icon className="h-3.5 w-3.5" />
+              <Edit2Icon className="h-4 w-4" />
             </button>
           )}
 

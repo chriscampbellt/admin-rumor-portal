@@ -17,11 +17,13 @@ const EventStatusSummary: React.FC<EventStatusSummaryProps> = ({
   className,
 }) => {
   return (
-    <div className={`flex items-center gap-5 py-2 ${className ?? ''}`}>
+    <div
+      className={`flex flex-wrap items-center gap-1.5 py-2.5 sm:gap-2 ${className ?? ''}`}
+    >
       {stats.map((item, idx) => (
         <div
           key={idx}
-          className="flex items-center gap-2 rounded-16 bg-ui-neuteralSurfaceSecondary px-4 py-2"
+          className="flex items-center gap-2 rounded-16 bg-ui-neuteralSurfaceSecondary px-2 py-2 sm:px-4"
         >
           <span className="font-romie text-lg font-bold text-ui-neutralSurfaceOnColor xl:text-[24px]">
             {item.count}

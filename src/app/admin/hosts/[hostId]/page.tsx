@@ -112,10 +112,10 @@ export default function HostProfile() {
           )}
         </div>
 
-        <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="rounded-3xl bg-white p-6 shadow-sm">
-            <div className="flex flex-col gap-6 2xl:flex-row">
-              <div className="flex flex-shrink-0 flex-col items-center justify-between xl:px-4">
+            <div className="flex flex-col gap-4 2xl:flex-row">
+              <div className="flex flex-shrink-0 flex-col items-center justify-between [@media(min-width:1441px)]:px-4">
                 <div className="mb-4 h-40 w-40 rounded-full bg-black" />
                 <div className="flex flex-wrap items-center justify-center gap-2.5">
                   {['🌐', '𝕏', '📷', '📘', '🎵', '▶️', 'in'].map(
@@ -239,7 +239,7 @@ export default function HostProfile() {
           <h3 className="mb-6 font-romie text-xl font-medium text-gray-900">
             Events
           </h3>
-          <div className="mb-6 overflow-x-auto border-b border-gray-200">
+          <div className="scrollbar-hidden mb-6 overflow-x-auto border-b border-gray-200">
             <div className="flex min-w-max space-x-8">
               {tabs.map(tab => {
                 const isActive = activeTab === tab.id;

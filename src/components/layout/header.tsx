@@ -48,20 +48,19 @@ export function Header({ config, onOpenSidebar }: HeaderProps) {
               <ChevronLeft className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
             </Button>
           )}
-          {onOpenSidebar && (
-            <Button
-              size="sm"
-              onClick={onOpenSidebar}
-              className="mr-2 h-8 w-8 rounded-full bg-ui-neutralSurfaceSupport p-0 hover:bg-gray-100 lg:hidden"
-            >
-              <Menu className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-            </Button>
-          )}
-          <h1 className="font-romie font-bold tracking-[1.25px] text-ui-neutralSurfaceOnColor lg:text-2xl xl:text-h2">
+          <h1 className="line-clamp-1 max-w-48 truncate font-romie font-bold tracking-[1.25px] text-ui-neutralSurfaceOnColor sm:max-w-full lg:text-2xl xl:text-h2">
             {config.title}
-          </h1>
+          </h1>{' '}
         </div>
-
+        {onOpenSidebar && (
+          <Button
+            size="sm"
+            onClick={onOpenSidebar}
+            className="mr-2 h-8 w-8 rounded-full bg-ui-neutralSurfaceSupport p-0 hover:bg-gray-100 lg:hidden"
+          >
+            <Menu className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+          </Button>
+        )}
         <div className="hidden items-center gap-1 lg:flex">
           <div className="flex items-center gap-2">
             <div

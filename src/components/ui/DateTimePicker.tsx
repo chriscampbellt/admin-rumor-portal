@@ -143,7 +143,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                     className={cn(
                       'cursor-pointer py-2 text-center hover:bg-gray-100',
                       selectedTime === time
-                        ? 'bg-black font-bold text-white hover:bg-gray-800'
+                        ? 'bg-ui-bgBlur font-medium text-white hover:bg-ui-bgBlur'
                         : 'text-gray-900'
                     )}
                     onClick={() => handleTimeSelect(time)}
@@ -167,7 +167,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                       className={cn(
                         'cursor-pointer py-2 text-center hover:bg-gray-100',
                         selectedTimezone === tz
-                          ? 'bg-black font-bold text-white hover:bg-gray-800'
+                          ? 'bg-ui-bgBlur font-medium text-white hover:bg-ui-bgBlur'
                           : 'text-gray-900'
                       )}
                       onClick={() => handleTimezoneSelect(tz)}

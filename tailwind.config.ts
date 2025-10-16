@@ -103,6 +103,7 @@ const config: Config = {
           bgLightYellow: '#DCCCA8',
           darkGrey: '#1D1C1C',
           contentDisabled: '#B8B8B8',
+          lightBlack: '#383D40',
         },
         heading: {
           black: '#1D2126',

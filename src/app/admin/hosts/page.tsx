@@ -495,7 +495,7 @@ const Host: React.FC = () => {
   return (
     <>
       <div className="mx-6 font-diatype">
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-start justify-between gap-2">
           <EventStatusSummary stats={stats} />
           <CommonButton
             onClick={inviteHostToggle.open}
