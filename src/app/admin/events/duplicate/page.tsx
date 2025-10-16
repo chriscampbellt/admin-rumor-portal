@@ -48,7 +48,7 @@ export default function DuplicateEventPage() {
       <div className="min-h-screen bg-ui-neutralSurfaceBackground">
         <div className="px-6 py-4">
           <div className="flex w-full items-center justify-between">
-            <h1 className="line-clamp-1 w-full max-w-[80%] truncate border-b border-ui-neutralSurfaceOnColor pb-1.5 pl-5 font-romie text-3xl font-medium text-ui-neutralSurfaceOnColor 2xl:text-[50px]">
+            <h1 className="w-full max-w-[80%] truncate border-b border-ui-neutralSurfaceOnColor font-romie text-3xl font-medium text-ui-neutralSurfaceOnColor sm:pl-5 lg:overflow-visible lg:text-clip lg:whitespace-normal xl:pb-1.5 2xl:text-[50px]">
               Sample Event (copy)
             </h1>
             <div className="flex items-center gap-2 rounded-full bg-white px-2.5 py-2 font-diatype text-sm text-ui-neutralSurfaceOnColor">
