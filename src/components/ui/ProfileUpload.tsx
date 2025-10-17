@@ -45,6 +45,8 @@ const ProfileUpload: React.FC<UploadProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const { push } = useToast();
   const { theme } = useTheme();
 
@@ -53,6 +55,20 @@ const ProfileUpload: React.FC<UploadProps> = ({
   }, [defaultFiles]);
 
   const triggerMessage = (msg = 'Upload Failed!') => push(msg, 'error');
+  const simulateProgress = () => {
+    setIsUploading(true);
+    setProgress(0);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setIsUploading(false), 500);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  };
 
   const addFiles = (newFiles: FileList | null) => {
     if (!newFiles) return files;
@@ -86,6 +102,7 @@ const ProfileUpload: React.FC<UploadProps> = ({
     const updatedFiles = addFiles(selectedFiles);
     setFiles(updatedFiles);
     onChange?.(updatedFiles);
+    simulateProgress();
     e.target.value = '';
   };
 
@@ -119,8 +136,20 @@ const ProfileUpload: React.FC<UploadProps> = ({
         onChange={onNewFileUpload}
       />
 
-      {/* Empty state */}
-      {files.length === 0 ? (
+      {isUploading ? (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-3 p-6 font-diatype">
+          <UploadIcon size={28} className="text-ui-neutralSurfaceOnColor" />
+          <div className="w-2/4 rounded-full bg-ui-neutralSurfaceSupport">
+            <div
+              className="h-1.5 rounded-full bg-ui-colorContentSuccess transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <span className="text-sm text-ui-neutralSurfaceOnColor">
+            {progress < 100 ? 'Uploading...' : 'Completed'}
+          </span>
+        </div>
+      ) : files.length === 0 ? (
         <div
           onClick={triggerUpload}
           className="flex h-full w-full cursor-pointer flex-col items-center justify-center text-center"

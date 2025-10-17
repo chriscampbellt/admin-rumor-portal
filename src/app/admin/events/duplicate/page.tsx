@@ -7,14 +7,18 @@ import Image from 'next/image';
 import {
   ChevronDown,
   Edit2,
+  Eye,
   EyeOff,
+  Globe,
   Info,
   MapPin,
   Plus,
   Trash2,
 } from 'lucide-react';
 
+import AddEventCollaborators from '@/components/ui/AddEventCollaborators';
 import AddFeatureTalent from '@/components/ui/AddFeatureTalent';
+import AddTicketDialog from '@/components/ui/AddTicketDialog';
 import Checkbox from '@/components/ui/Checkbox';
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
@@ -28,6 +32,9 @@ export default function DuplicateEventPage() {
   const [showMap, setShowMap] = useState(true);
   const addFeatureTalent = useToggle(false);
   const addQuestion = useToggle(false);
+  const addTicket = useToggle(false);
+  const addEventCollaborators = useToggle(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -51,10 +58,76 @@ export default function DuplicateEventPage() {
             <h1 className="w-full max-w-[80%] truncate border-b border-ui-neutralSurfaceOnColor font-romie text-3xl font-medium text-ui-neutralSurfaceOnColor sm:pl-5 lg:overflow-visible lg:text-clip lg:whitespace-normal xl:pb-1.5 2xl:text-[50px]">
               Sample Event (copy)
             </h1>
-            <div className="flex items-center gap-2 rounded-full bg-white px-2.5 py-2 font-diatype text-sm text-ui-neutralSurfaceOnColor">
-              <EyeOff size={16} />
-              <span>Private</span>
-              <ChevronDown className="h-4 w-4" />
+            <div className="relative">
+              <div
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`flex cursor-pointer items-center gap-2 rounded-full px-2.5 py-2 font-diatype text-sm transition-all ${
+                  formData.visibility === 'public'
+                    ? 'bg-black text-white'
+                    : 'bg-white text-ui-neutralSurfaceOnColor'
+                }`}
+              >
+                {formData.visibility === 'public' ? (
+                  <Eye size={20} />
+                ) : (
+                  <EyeOff size={20} />
+                )}
+                <span className="capitalize">{formData.visibility}</span>
+                <ChevronDown className="h-4 w-4" />
+              </div>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 z-20 mt-2 min-w-[330px] max-w-[380px] rounded-2xl bg-white shadow-md">
+                  <button
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, visibility: 'public' }));
+                      setDropdownOpen(false);
+                    }}
+                    className={`flex w-full items-start gap-2 rounded-t-2xl p-4 text-left font-diatype text-[15px] ${
+                      formData.visibility === 'public'
+                        ? 'bg-ui-neutralSurfaceBackground'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Globe size={20} className="mt-[2px]" />
+                        <div className="text-[16px] text-ui-neutralSurfaceOnColor">
+                          Public
+                        </div>
+                      </div>
+                      <p className="whitespace-nowrap pt-1 text-sm text-ui-textPrimaryColor">
+                        Shown on the discovery page of the Rumor app.
+                      </p>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, visibility: 'private' }));
+                      setDropdownOpen(false);
+                    }}
+                    className={`flex w-full items-start gap-2 rounded-b-2xl p-4 text-left font-diatype text-[15px] ${
+                      formData.visibility === 'private'
+                        ? 'bg-ui-neutralSurfaceBackground'
+                        : 'hover:bg-gray-100'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <EyeOff size={20} className="mt-[2px]" />
+                        <div className="text-[16px] text-ui-neutralSurfaceOnColor">
+                          Private
+                        </div>
+                      </div>
+                      <p className="whitespace-nowrap pt-1 text-sm text-ui-textPrimaryColor">
+                        Not listed publicly. Only people you invite can
+                        register.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -270,6 +343,7 @@ export default function DuplicateEventPage() {
                   ))}
 
                   <CommonButton
+                    onClick={addTicket.open}
                     leftIcon={<Plus className="h-4 w-4" />}
                     className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
                   >
@@ -386,6 +460,7 @@ export default function DuplicateEventPage() {
                   </div>
 
                   <CommonButton
+                    onClick={addEventCollaborators.open}
                     leftIcon={<Plus className="h-4 w-4" />}
                     className="w-full border border-ui-neuteralSurfaceSecondary bg-transparent py-3 font-diatype text-[15px] font-normal text-ui-neutralSurfaceOnColor hover:bg-ui-neuteralSurfaceSecondary hover:text-white"
                   >
@@ -457,6 +532,11 @@ export default function DuplicateEventPage() {
         onClose={addFeatureTalent.toggle}
       />
       <Questionnaire isOpen={addQuestion.isOpen} onClose={addQuestion.toggle} />
+      <AddTicketDialog isOpen={addTicket.isOpen} onClose={addTicket.toggle} />
+      <AddEventCollaborators
+        isOpen={addEventCollaborators.isOpen}
+        onClose={addEventCollaborators.toggle}
+      />
     </>
   );
 }
