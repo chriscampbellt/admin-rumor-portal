@@ -77,12 +77,17 @@ const EventNameCell = ({
   icon,
   eventName,
   id,
+  visibility,
+  status,
   onIconClick,
 }: EventNameCellProps) => {
   const router = useRouter();
   const handleClick = () => {
     router.push(`/admin/events/${id}`);
   };
+  const isUpcomingPublic =
+    status?.toLowerCase() === 'upcoming' &&
+    visibility?.toLowerCase() === 'public';
   return (
     <div className="flex items-center gap-6">
       <span
@@ -92,7 +97,7 @@ const EventNameCell = ({
           onIconClick();
         }}
       >
-        {icon}
+        {isUpcomingPublic && icon}
       </span>
       <span
         onClick={handleClick}

@@ -5,8 +5,7 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { Trash2, Upload } from 'lucide-react';
-
-import { useToast } from './toast';
+import toast from 'react-hot-toast';
 
 interface UploadProps {
   accept?: string;
@@ -43,13 +42,12 @@ const Attachment: React.FC<UploadProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
-  const { push } = useToast();
 
   useEffect(() => {
     if (defaultFiles.length) setFiles(defaultFiles);
   }, [defaultFiles]);
 
-  const triggerMessage = (msg = 'Upload Failed!') => push(msg, 'error');
+  const triggerMessage = (msg = 'Upload Failed!') => toast.error(msg);
 
   const validateFiles = (selectedFiles: FileList | null): boolean => {
     if (!selectedFiles) return false;
