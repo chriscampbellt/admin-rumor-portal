@@ -53,7 +53,7 @@ const ProfileUpload: React.FC<UploadProps> = ({
     if (defaultFiles.length) setFiles(defaultFiles);
   }, [defaultFiles]);
 
-  const triggerMessage = (msg = 'Upload Failed!') => toast.error('error');
+  const triggerMessage = (msg = 'Upload Failed!') => toast.error(msg);
   const simulateProgress = () => {
     setIsUploading(true);
     setProgress(0);

@@ -53,7 +53,7 @@ const Upload: React.FC<UploadProps> = ({
   }, [defaultFiles]);
 
   const triggerMessage = (msg: string = 'Upload Failed!') => {
-    toast.error('error');
+    toast.error(msg);
     setError(true);
     setTimeout(() => setError(false), 3000); // reset error border after 3s
   };
