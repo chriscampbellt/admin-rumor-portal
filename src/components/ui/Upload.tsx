@@ -5,8 +5,7 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { Edit2Icon, FileText, Upload as UploadIcon } from 'lucide-react';
-
-import { useToast } from './toast';
+import toast from 'react-hot-toast';
 
 interface UploadProps {
   accept?: string;
@@ -48,14 +47,13 @@ const Upload: React.FC<UploadProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(false);
-  const { push } = useToast();
 
   useEffect(() => {
     if (defaultFiles.length) setFiles(defaultFiles);
   }, [defaultFiles]);
 
   const triggerMessage = (msg: string = 'Upload Failed!') => {
-    push(msg, 'error');
+    toast.error('error');
     setError(true);
     setTimeout(() => setError(false), 3000); // reset error border after 3s
   };

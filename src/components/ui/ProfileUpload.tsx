@@ -5,11 +5,11 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import { Edit2Icon, FileUpIcon, UploadIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import { useTheme } from '@/context/ThemeContext';
 
 import { CommonButton } from './CommonButton';
-import { useToast } from './toast';
 
 interface UploadProps {
   accept?: string;
@@ -47,14 +47,13 @@ const ProfileUpload: React.FC<UploadProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const { push } = useToast();
   const { theme } = useTheme();
 
   useEffect(() => {
     if (defaultFiles.length) setFiles(defaultFiles);
   }, [defaultFiles]);
 
-  const triggerMessage = (msg = 'Upload Failed!') => push(msg, 'error');
+  const triggerMessage = (msg = 'Upload Failed!') => toast.error('error');
   const simulateProgress = () => {
     setIsUploading(true);
     setProgress(0);
