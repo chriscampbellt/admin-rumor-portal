@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { ToastProvider } from '@/components/ui/toast';
 import { RouteProvider } from '@/context/RouteContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import ReactQueryProvider from '@/providers/ReactQueryProvider';
+import { ToastProvider } from '@/providers/ToastProvider';
 
 import './globals.css';
 

@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import toast from 'react-hot-toast';
+
 import AuthFooter from '@/components/layout/authFooter';
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
@@ -18,7 +20,6 @@ export default function SignInPage() {
   const [passwordError, setPasswordError] = useState('');
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-
   const { theme } = useTheme();
   const { token, setToken } = useAuthStore();
 
@@ -60,10 +61,10 @@ export default function SignInPage() {
       const fakeToken = 'mocked_token_123';
       setToken(fakeToken);
 
-      console.log('✅ Logged in successfully!');
+      toast.success('Logged in successfully!');
       router.push('/admin/dashboard');
     } catch (err) {
-      console.error('❌ Login error:', err);
+      toast.error('Login error');
     }
   };
 
