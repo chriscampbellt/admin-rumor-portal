@@ -338,134 +338,136 @@ export default function PendingApprovalTable() {
             </Card>
           </div>
 
-          <div className="flex-1 space-y-4">
-            <div className="space-y-5">
-              <div className="flex flex-wrap items-center gap-2">
-                <Calendar className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  Start Date
-                </span>
-                <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  Feb 9, 2024 — 9:00 am
-                </span>
-                <Badge className="rounded-md bg-ui-neutralSurfaceBackground px-1 py-0.5 text-xs font-medium">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M5.5 0.5C8.53757 0.5 11 2.96243 11 6C11 9.03757 8.53757 11.5 5.5 11.5C2.46243 11.5 0 9.03757 0 6C0 2.96243 2.46243 0.5 5.5 0.5ZM1.02746 5.5C1.234 3.63162 2.5844 2.10799 4.36285 1.64491C3.59955 2.79221 3.13715 4.11841 3.02505 5.5H1.02746ZM1.02746 6.5C1.234 8.36838 2.5844 9.89201 4.36285 10.3551C3.59955 9.20779 3.13715 7.88159 3.02505 6.5H1.02746ZM6.63715 10.3551C8.4156 9.89201 9.766 8.36838 9.97254 6.5H7.97495C7.86285 7.88159 7.40045 9.20779 6.63715 10.3551ZM9.97254 5.5H7.97495C7.86285 4.11841 7.40045 2.79221 6.63715 1.64491C8.4156 2.10799 9.766 3.63162 9.97254 5.5ZM5.5 1.7754C6.33484 2.85097 6.84561 4.14341 6.9712 5.5H4.0288C4.15439 4.14341 4.66516 2.85097 5.5 1.7754ZM5.5 10.2246C4.66516 9.14903 4.15439 7.85659 4.0288 6.5H6.9712C6.84561 7.85659 6.33484 9.14903 5.5 10.2246Z"
-                      fill="#1F1F1F"
-                    />
-                  </svg>
-                  <span className="ml-1 font-diatype text-ui-neutralSurfaceOnColor">
-                    GMT
+          <div className="flex flex-col gap-3 xl:flex-1 [@media(min-width:1441px)]:flex-row">
+            <div className="flex-1 space-y-4">
+              <div className="space-y-5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Calendar className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    Start Date
                   </span>
-                </Badge>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Calendar className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  End Date
-                </span>
-                <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  Feb 10, 2024 — 1:00 am
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <MapPin className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  Location
-                </span>
-                <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  Wynn Resorts, Las Vegas, NV 89109
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <UserCircle className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  Confirmed Guests
-                </span>
-                <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  0/4,000
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Users2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  Displayed Collaborators
-                </span>
-                <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  Uncommon Entertainment & H Wood Group
-                </span>
-                <CommonButton
-                  onClick={dialogs.collaborators.open}
-                  className="rounded-full border border-ui-bgBlur bg-transparent px-2.5 py-1.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
-                >
-                  <ArrowRight size={18} />
-                </CommonButton>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Star className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
-                <span className="font-diatype text-sm text-ui-neutralContentBody">
-                  Average Rating
-                </span>
-                <span className="flex items-center gap-1 font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
-                  5.0 <Star size={20} fill="#000000" />
-                  <Star size={20} fill="#000000" />
-                  <Star size={20} fill="#000000" />
-                  <span className="text-ui-neutralPlaceholder">(10)</span>
-                </span>
+                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    Feb 9, 2024 — 9:00 am
+                  </span>
+                  <Badge className="rounded-md bg-ui-neutralSurfaceBackground px-1 py-0.5 text-xs font-medium">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M5.5 0.5C8.53757 0.5 11 2.96243 11 6C11 9.03757 8.53757 11.5 5.5 11.5C2.46243 11.5 0 9.03757 0 6C0 2.96243 2.46243 0.5 5.5 0.5ZM1.02746 5.5C1.234 3.63162 2.5844 2.10799 4.36285 1.64491C3.59955 2.79221 3.13715 4.11841 3.02505 5.5H1.02746ZM1.02746 6.5C1.234 8.36838 2.5844 9.89201 4.36285 10.3551C3.59955 9.20779 3.13715 7.88159 3.02505 6.5H1.02746ZM6.63715 10.3551C8.4156 9.89201 9.766 8.36838 9.97254 6.5H7.97495C7.86285 7.88159 7.40045 9.20779 6.63715 10.3551ZM9.97254 5.5H7.97495C7.86285 4.11841 7.40045 2.79221 6.63715 1.64491C8.4156 2.10799 9.766 3.63162 9.97254 5.5ZM5.5 1.7754C6.33484 2.85097 6.84561 4.14341 6.9712 5.5H4.0288C4.15439 4.14341 4.66516 2.85097 5.5 1.7754ZM5.5 10.2246C4.66516 9.14903 4.15439 7.85659 4.0288 6.5H6.9712C6.84561 7.85659 6.33484 9.14903 5.5 10.2246Z"
+                        fill="#1F1F1F"
+                      />
+                    </svg>
+                    <span className="ml-1 font-diatype text-ui-neutralSurfaceOnColor">
+                      GMT
+                    </span>
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Calendar className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    End Date
+                  </span>
+                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    Feb 10, 2024 — 1:00 am
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <MapPin className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    Location
+                  </span>
+                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    Wynn Resorts, Las Vegas, NV 89109
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <UserCircle className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    Confirmed Guests
+                  </span>
+                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    0/4,000
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Users2 className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    Displayed Collaborators
+                  </span>
+                  <span className="font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    Uncommon Entertainment & H Wood Group
+                  </span>
+                  <CommonButton
+                    onClick={dialogs.collaborators.open}
+                    className="rounded-full border border-ui-bgBlur bg-transparent px-2.5 py-1.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
+                  >
+                    <ArrowRight size={18} />
+                  </CommonButton>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Star className="h-5 w-5 text-ui-neutralSurfaceOnColor" />
+                  <span className="font-diatype text-sm text-ui-neutralContentBody">
+                    Average Rating
+                  </span>
+                  <span className="flex items-center gap-1 font-diatype text-sm font-medium text-ui-neutralSurfaceOnColor">
+                    5.0 <Star size={20} fill="#000000" />
+                    <Star size={20} fill="#000000" />
+                    <Star size={20} fill="#000000" />
+                    <span className="text-ui-neutralPlaceholder">(10)</span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div
-            className="relative flex items-center gap-2 self-start"
-            ref={popupRef}
-          >
-            <CommonButton
-              leftIcon={<Eye size={18} />}
-              className="rounded-full bg-ui-neutralSurfaceOnColor px-3.5 py-2 text-sm text-white transition-colors hover:bg-gray-800 lg:text-base"
+            <div
+              className="relative flex items-center gap-2 self-start"
+              ref={popupRef}
             >
-              Public
-            </CommonButton>
-            <CommonButton className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-neutralInputBg hover:text-ui-neutralSurfaceOnColor">
-              <Pencil size={18} />
-            </CommonButton>
-            <CommonButton
-              onClick={togglePopup}
-              className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
-            >
-              <MoreHorizontal size={20} />
-            </CommonButton>
-            {isPopupOpen && (
-              <div className="absolute right-0 top-12 z-10 w-[150px] rounded-8 border border-ui-neutralBorderComponent bg-white font-diatype text-ui-neutralSurfaceOnColor shadow-lg">
-                <button
-                  onClick={() => {
-                    setIsPopupOpen(false);
-                    router.push('/admin/events/duplicate');
-                  }}
-                  className="block w-full rounded-t-8 px-3 py-2 text-left text-sm hover:bg-gray-100"
-                >
-                  Duplicate Event
-                </button>
-                <button
-                  onClick={() => {
-                    dialogs.cancel.open();
-                    setIsPopupOpen(false);
-                  }}
-                  className="block w-full whitespace-nowrap rounded-b-8 px-3 py-2 text-left text-sm text-ui-neutralDarkRed hover:bg-gray-100"
-                >
-                  Cancel Event
-                </button>
-              </div>
-            )}
+              <CommonButton
+                leftIcon={<Eye size={18} />}
+                className="rounded-full bg-ui-neutralSurfaceOnColor px-3.5 py-2 text-sm text-white transition-colors hover:bg-gray-800 lg:text-base"
+              >
+                Public
+              </CommonButton>
+              <CommonButton className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-neutralInputBg hover:text-ui-neutralSurfaceOnColor">
+                <Pencil size={18} />
+              </CommonButton>
+              <CommonButton
+                onClick={togglePopup}
+                className="rounded-full border border-ui-lightGreyBorder bg-transparent p-2.5 text-sm text-ui-neutralSurfaceOnColor hover:bg-ui-bgBlur hover:text-white"
+              >
+                <MoreHorizontal size={20} />
+              </CommonButton>
+              {isPopupOpen && (
+                <div className="absolute right-0 top-12 z-10 w-[150px] rounded-8 border border-ui-neutralBorderComponent bg-white font-diatype text-ui-neutralSurfaceOnColor shadow-lg">
+                  <button
+                    onClick={() => {
+                      setIsPopupOpen(false);
+                      router.push('/admin/events/duplicate');
+                    }}
+                    className="block w-full rounded-t-8 px-3 py-2 text-left text-sm hover:bg-gray-100"
+                  >
+                    Duplicate Event
+                  </button>
+                  <button
+                    onClick={() => {
+                      dialogs.cancel.open();
+                      setIsPopupOpen(false);
+                    }}
+                    className="block w-full whitespace-nowrap rounded-b-8 px-3 py-2 text-left text-sm text-ui-neutralDarkRed hover:bg-gray-100"
+                  >
+                    Cancel Event
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="w-full space-y-5 rounded-[24px] bg-white p-6 2xl:w-1/4">
@@ -513,7 +515,7 @@ export default function PendingApprovalTable() {
             width={42}
           />
         </div>
-        <div className="mb-6 border-b border-ui-neutralContentLight">
+        <div className="scrollbar-hidden mb-6 overflow-x-auto border-b border-ui-neutralContentLight">
           <div className="flex space-x-6">
             {tabs.map(tab => {
               const isActive = activeTab === tab.id;

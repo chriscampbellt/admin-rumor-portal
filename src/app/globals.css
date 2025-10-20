@@ -111,17 +111,18 @@
 }
 .day-picker .rdp-button_previous svg,
 .day-picker .rdp-button_next svg {
-  background-color: #d8d8d8 !important;
-  height: 24px !important;
-  width: 24px !important;
+  /* background-color: #d8d8d8 !important; */
+  height: 20px !important;
+  width: 20px !important;
   border-radius: 50% !important;
   fill: #1f1f1f !important;
 }
 
 .day-picker .rdp-selected .rdp-day_button {
-  background-color: #1f1f1f !important;
+  background-color: #a4887e !important;
   color: #ffffff !important;
-  border: 1px solid #1f1f1f !important;
+  font-weight: 500 !important;
+  border: 1px solid #a4887e !important;
 }
 
 .day-picker .rdp-day_button {

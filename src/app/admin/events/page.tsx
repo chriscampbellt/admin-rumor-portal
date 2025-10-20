@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { ColumnDef } from '@tanstack/react-table';
+import { motion } from 'framer-motion';
 import { ChevronDown, Eye, EyeOff, Search, Star, User2 } from 'lucide-react';
 
 import { CommonButton } from '@/components/ui/CommonButton';
@@ -330,39 +331,85 @@ export default function EventTable() {
       },
     },
     ...(showExtraColumns
-      ? ([
+      ? [
           {
             accessorKey: 'featured',
-            header: 'Featured Events',
+            header: () => (
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                Featured Events
+              </motion.div>
+            ),
             cell: () => (
-              <div className="flex items-center gap-2.5 text-ui-textTertiary">
-                <span className="flex items-center gap-1 rounded-full border border-gray-300 px-2.5 py-1.5 text-[13px]">
-                  <Star size={16} />
-                  Featured 1
-                  <ChevronDown size={15} />
-                </span>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center gap-2.5 text-ui-textTertiary">
+                  <span className="flex items-center gap-1 rounded-full border border-gray-300 px-2.5 py-1.5 text-[13px]">
+                    <Star size={16} />
+                    Featured 1
+                    <ChevronDown size={15} />
+                  </span>
+                </div>
+              </motion.div>
             ),
           },
           {
             accessorKey: 'collaborators',
-            header: 'Collaborators',
+            header: () => (
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                Collaborators
+              </motion.div>
+            ),
             cell: () => (
-              <span className="text-[13px] text-ui-textTertiary">
+              <motion.span
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+                className="text-[13px] text-ui-textTertiary"
+              >
                 Revolve +2
-              </span>
+              </motion.span>
             ),
           },
           {
             accessorKey: 'featuredTalent',
-            header: 'Featured Talent',
+            header: () => (
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+              >
+                Featured Talent
+              </motion.div>
+            ),
             cell: () => (
-              <span className="text-[13px] text-ui-textPrimaryColor">
+              <motion.span
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+                className="text-[13px] text-ui-textPrimaryColor"
+              >
                 The Rolling Stones +10
-              </span>
+              </motion.span>
             ),
           },
-        ] as ColumnDef<EventData>[])
+        ]
       : []),
   ];
   const eventStats = [
@@ -425,7 +472,12 @@ export default function EventTable() {
           />
         </div>
       </div>
-      <DataTable columns={columns} data={data} />
+      <motion.div
+        layout
+        transition={{ layout: { duration: 0.5, ease: 'easeInOut' } }}
+      >
+        <DataTable columns={columns} data={data} />
+      </motion.div>
     </div>
   );
 }

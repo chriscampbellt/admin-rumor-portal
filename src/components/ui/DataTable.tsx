@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import {
   ColumnDef,
+  RowSelectionState,
+  Updater,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -22,6 +24,8 @@ interface DataTableProps<TData> {
   selectable?: boolean;
   className?: string;
   onRowSelect?: (rows: TData[]) => void;
+  rowSelection?: RowSelectionState;
+  setRowSelection?: (updater: Updater<RowSelectionState>) => void;
 }
 
 function DataTable<TData extends { id: string | number }>({
@@ -30,9 +34,15 @@ function DataTable<TData extends { id: string | number }>({
   selectable = false,
   className,
   onRowSelect,
+  rowSelection: controlledRowSelection,
+  setRowSelection: setControlledRowSelection,
 }: DataTableProps<TData>) {
   const [globalFilter, setGlobalFilter] = useState('');
-  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+
+  const [internalRowSelection, setInternalRowSelection] =
+    useState<RowSelectionState>({});
+  const rowSelection = controlledRowSelection ?? internalRowSelection;
+  const setRowSelection = setControlledRowSelection ?? setInternalRowSelection;
 
   const table = useReactTable({
     data,
