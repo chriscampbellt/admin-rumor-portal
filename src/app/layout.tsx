@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { ToastProvider } from '@/components/ui/toast';
 import { RouteProvider } from '@/context/RouteContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
 
 import './globals.css';
 
@@ -54,11 +55,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${abcDiatype.variable} ${romieFont.variable}`}>
-        <ThemeProvider>
-          <RouteProvider>
-            <ToastProvider>{children}</ToastProvider>
-          </RouteProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider>
+            <RouteProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </RouteProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 
 import { LogOut } from 'lucide-react';
 
+import { useAuthStore } from '@/lib/store/authStore';
 import { cn } from '@/lib/utils';
 
 interface ProfileDropdownProps {
@@ -27,7 +28,11 @@ export function ProfileView({
 }: ProfileDropdownProps) {
   const router = useRouter();
   const dropdownRef = React.useRef<HTMLDivElement>(null);
-
+  const logout = useAuthStore(state => state.logout);
+  const handleLogout = () => {
+    logout();
+    router.push('/admin/auth/sign-in');
+  };
   // Handle click outside
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -88,7 +93,7 @@ export function ProfileView({
           <li>
             <button
               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-red-600 hover:bg-ui-neutralBorderComponent"
-              onClick={() => router.push('/admin/auth/sign-in')}
+              onClick={handleLogout}
             >
               <LogOut size={18} />
               <span>Logout</span>

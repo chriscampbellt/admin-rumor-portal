@@ -9,6 +9,7 @@ import AuthFooter from '@/components/layout/authFooter';
 import { CommonButton } from '@/components/ui/CommonButton';
 import CommonInput from '@/components/ui/CommonInput';
 import { useTheme } from '@/context/ThemeContext';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
@@ -19,8 +20,12 @@ export default function SignInPage() {
   const router = useRouter();
 
   const { theme } = useTheme();
+  const { token, setToken } = useAuthStore();
 
   useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    if (token) router.push('/admin/dashboard');
+  }, [token, router]);
 
   const validateForm = () => {
     let valid = true;
@@ -45,10 +50,21 @@ export default function SignInPage() {
     return valid;
   };
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!validateForm()) return;
-    console.log('🔑 Sign in attempt:', { email, password });
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      const fakeToken = 'mocked_token_123';
+      setToken(fakeToken);
+
+      console.log('✅ Logged in successfully!');
+      router.push('/admin/dashboard');
+    } catch (err) {
+      console.error('❌ Login error:', err);
+    }
   };
 
   if (!mounted) return null;
@@ -110,7 +126,6 @@ export default function SignInPage() {
                 <CommonButton
                   type="submit"
                   className="mt-8 w-full py-4 font-diatype"
-                  onClick={() => router.push('/admin/dashboard')}
                 >
                   Enter
                 </CommonButton>

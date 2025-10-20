@@ -9,6 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeft, LogOut, LucideIcon, Menu, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/lib/store/authStore';
 import { cn } from '@/lib/utils';
 
 import { ProfileView } from '../ui/ProfileView';
@@ -39,7 +40,12 @@ export function Sidebar({
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
   const [profileOpen, setProfileOpen] = useState(false);
+  const logout = useAuthStore(state => state.logout);
 
+  const handleLogout = () => {
+    logout();
+    router.push('/admin/auth/sign-in');
+  };
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -188,7 +194,7 @@ export function Sidebar({
           )}
         >
           <Button
-            onClick={() => router.push('/admin/auth/sign-in')}
+            onClick={handleLogout}
             variant="ghost"
             className={cn(
               'h-10 w-full justify-start gap-3 text-zinc-400 hover:bg-zinc-800 hover:text-white',
