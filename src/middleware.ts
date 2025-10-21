@@ -13,10 +13,15 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (
-    !token &&
-    !publicRoutes.includes(pathname) &&
-    pathname.startsWith('/admin')
+    pathname.includes('/_next/') ||
+    pathname.includes('/api/') ||
+    pathname.match(/\.(ico|png|jpg|jpeg|svg|gif)$/) ||
+    publicRoutes.includes(pathname)
   ) {
+    return NextResponse.next();
+  }
+
+  if (!token && pathname.startsWith('/admin')) {
     const loginUrl = new URL('/admin/auth/sign-in', req.url);
     return NextResponse.redirect(loginUrl);
   }
@@ -30,8 +35,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/admin/:path*',
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$).*)',
-  ],
+  matcher: ['/admin/:path*'],
 };
